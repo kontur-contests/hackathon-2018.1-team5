@@ -22,6 +22,13 @@ var objI = objC.getContext("2d");
 objC.width = 1024;
 objC.height = 768;
 
+window.player = {
+    x: 0,
+    y: 0,
+    rotation: 0,
+    oxygen: 0,
+    speed: 2
+}
 
 
 socket.on('texture', function(d) {
@@ -30,6 +37,17 @@ socket.on('texture', function(d) {
 socket.on('map', function(d) {
     window.maps = d;
     console.log(window.maps);
+});
+socket.on('hi', function(d) {
+    localStorage.setItem("token", d.token)
+});
+
+socket.on('you', function(d) {
+    window.player.oxygen = d.oxygen;
+});
+
+$(document).ready(function() {
+    socket.emit('hi', { username: 'test' });
 });
 
 
@@ -44,8 +62,15 @@ var control = {
 }
 
 
+//  двигать карту
+// отрисовка персов 
+//  отрисовка угла перса 
+
 
 function draw() {
+    mapL.clearRect(0, 0, mapC.width, mapC.height);
+    objI.clearRect(0, 0, mapC.width, mapC.height);
+    objM.clearRect(0, 0, mapC.width, mapC.height);
     texture = JSON.parse(localStorage.texture);
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
@@ -56,77 +81,28 @@ function draw() {
     for (var i = 0; i < 16; i++) {
         for (var j = 0; j < 16; j++) {
             x = 32 * i;
-            y = 32 * j;     
-                        // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
+            y = 32 * j;
+            // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
             mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
             // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
         }
     }
-    objM.drawImage(texture[14], 512, 368);
+    objM.drawImage(texture[15], 512 + window.player.x, 368 + window.player.y);
+    // socket.emit('move', { token:  localStorage.getItem("token"), control: control });
+
+
+    if (control['s']) window.player.y = window.player.y + window.player.speed;
+    if (control['w']) window.player.y = window.player.y - window.player.speed;
+    if (control['a']) window.player.x = window.player.x - window.player.speed;
+    if (control['d']) window.player.x = window.player.x + window.player.speed;
+
+    console.log(window.player)
+    console.log(control)
 }
 
+
+
 setInterval(draw, 1000 / 30)
-
-
-var centerX = 150;
-var centerY = 200;
-var radius = 100;
-var startingAngle = 1.25 * Math.PI;
-var endingAngle = 1.75 * Math.PI;
-// drawRotatedImage(man, 0, 0, 0);
-// drawRotatedImage(texture, 500, 0, 0);
-
-
-// socket.on('up', function(data) {
-//     number = 0;
-//     // $('.info').text(JSON.stringify(data));
-//     map.clearRect(0, 0, mapC.width, mapC.height);
-//     objI.clearRect(0, 0, mapC.width, mapC.height);
-//     objM.clearRect(0, 0, mapC.width, mapC.height);
-
-
-//     for (var i = 0; i < data.map.mapa.length; i++) {
-//         // data.map.mapa[i]
-//         for (var j = 0; j < data.map.mapa[i].length; j++) {
-
-//             for (var k = 0; k < data.players.length; k++) {
-//                 if (data.players[k].name == socket.json.id) number = k;
-//             }
-
-//             tx = data.map.mapa[j][i][0];
-//             ty = data.map.mapa[j][i][1];
-//             x = 64 * i;
-//             y = 64 * j;
-//             // x = x + data.players[number].x;
-//             // y = y + data.players[number].y;
-//             // console.log(tx + "/" + ty)
-//             map.drawImage(texture, 64 * tx, 64 * ty, 64, 64, x, y, 64, 64);
-
-
-
-//             //player
-//             for (var p = 0; p < data.players.length; p++) {
-//                 xP = data.players[p].x;
-//                 yP = data.players[p].y;
-//                 ratP = data.players[p].rat;
-
-//                 // objI.arc(xP, yP, radius, startingAngle, endingAngle);
-//                 // objI.stroke();
-//                 drawRotatedImage(man, xP, yP, ratP);
-//             }
-
-
-
-//         }
-//     }
-
-//     // map.drawImage(texture, 74*5, 74*5, 64, 64, 0, 0, 64, 64);
-
-//     socket.emit('move', { player: name, control: control });
-// });
-
-
-// socket.emit('move', { player: name, control: control });
 
 
 
@@ -173,4 +149,28 @@ $(document).keydown(function(eventObject) {
         default:
             break;
     }
+});
+
+$(document).keyup(function(eventObject) {
+    switch (eventObject.which) {
+        case 87:
+            control.w = false;
+            break;
+
+        case 65:
+            control.a = false;
+            break;
+
+        case 83:
+            control.s = false;
+            break;
+
+        case 68:
+            control.d = false;
+            break;
+
+        default:
+            break;
+    }
+
 });
