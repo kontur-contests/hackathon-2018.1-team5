@@ -4,7 +4,7 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.34.49");
+app.listen(80, "10.34.32.57");
 var async = require('async');
 
 
@@ -78,8 +78,13 @@ io.on('connection', function(socket) {
     console.log("user connect " + socket.id);
 
     // socket.on('hi', function(data) {
-    var obj = player.newPlayer(data.username);
-    global.players.push(obj);
+
+    var obj = player.createPlayer("test");
+
+    console.log(player.newPlayer('neroslava'))
+    global.players.push(player.newPlayer('neroslava'));
+    console.log(global.players)
+
     // socket.emit('hi', {
     //     username: data.username, 
     //     token: token
@@ -89,21 +94,21 @@ io.on('connection', function(socket) {
 });
 
 
-function getFiles (dirPath, callback) {
+function getFiles(dirPath, callback) {
 
-    fs.readdir(dirPath, function (err, files) {
+    fs.readdir(dirPath, function(err, files) {
         if (err) return callback(err);
 
         var filePaths = [];
         var name = [];
-        async.eachSeries(files, function (fileName, eachCallback) {
+        async.eachSeries(files, function(fileName, eachCallback) {
             var filePath = path.join(dirPath, fileName);
 
-            fs.stat(filePath, function (err, stat) {
+            fs.stat(filePath, function(err, stat) {
                 if (err) return eachCallback(err);
 
                 if (stat.isDirectory()) {
-                    getFiles(filePath, function (err, subDirFiles) {
+                    getFiles(filePath, function(err, subDirFiles) {
                         if (err) return eachCallback(err);
 
                         filePaths = filePaths.concat(subDirFiles);
@@ -120,7 +125,7 @@ function getFiles (dirPath, callback) {
                     eachCallback(null);
                 }
             });
-        }, function (err) {
+        }, function(err) {
             callback(err, filePaths, name);
         });
 
@@ -128,8 +133,8 @@ function getFiles (dirPath, callback) {
 }
 
 
-getFiles('./texture', function (err, files, name) {
+getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
     console.log(err || files);
-    for (var i = 0; i < files.length; i++)  global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
+    for (var i = 0; i < files.length; i++) global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
 });
