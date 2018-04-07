@@ -22,6 +22,13 @@ var objI = objC.getContext("2d");
 objC.width = 1024;
 objC.height = 768;
 
+window.player = {
+    x: 0,
+    y: 0,
+    rotation: 0,
+    oxygen: 0,
+    speed: 2
+}
 
 
 socket.on('texture', function(d) {
@@ -30,6 +37,17 @@ socket.on('texture', function(d) {
 socket.on('map', function(d) {
     window.maps = d;
     console.log(window.maps);
+});
+socket.on('hi', function(d) {
+    localStorage.setItem("token", d.token)
+});
+
+socket.on('you', function(d) {
+    window.player.oxygen = d.oxygen;
+});
+
+$(document).ready(function() {
+    socket.emit('hi', { username: 'test' });
 });
 
 
@@ -44,26 +62,35 @@ var control = {
 }
 
 
+//  двигать карту
+// отрисовка персов 
+//  отрисовка угла перса 
+
 
 function draw() {
+    mapL.clearRect(0, 0, mapC.width, mapC.height);
+    objI.clearRect(0, 0, mapC.width, mapC.height);
+    objM.clearRect(0, 0, mapC.width, mapC.height);
     texture = JSON.parse(localStorage.texture);
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
         texture[i] = new Image();
         texture[i].src = src;
     }
+    console.log(texture);
 
     if(window.maps){
         for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
-            x = 32 * i;
-            y = 32 * j;     
-            // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
-            mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
-            // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+            for (var j = 0; j < 16; j++) {
+                x = 32 * i;
+                y = 32 * j;
+                // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
+                mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
+                // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+            }
         }
-    }
-    objM.drawImage(texture[14], 512, 368);
+        objM.drawImage(texture[15], 512 + window.player.x, 368 + window.player.y);
+    // socket.emit('move', { token:  localStorage.getItem("token"), control: control });
     }
 }
 
@@ -118,17 +145,18 @@ var endingAngle = 1.75 * Math.PI;
 //             }
 
 
+    if (control['s']) window.player.y = window.player.y + window.player.speed;
+    if (control['w']) window.player.y = window.player.y - window.player.speed;
+    if (control['a']) window.player.x = window.player.x - window.player.speed;
+    if (control['d']) window.player.x = window.player.x + window.player.speed;
 
-//         }
-//     }
-
-//     // map.drawImage(texture, 74*5, 74*5, 64, 64, 0, 0, 64, 64);
-
-//     socket.emit('move', { player: name, control: control });
-// });
+    console.log(window.player)
+    console.log(control)
+}
 
 
-// socket.emit('move', { player: name, control: control });
+
+setInterval(draw, 1000 / 30)
 
 
 
@@ -175,4 +203,28 @@ $(document).keydown(function(eventObject) {
         default:
             break;
     }
+});
+
+$(document).keyup(function(eventObject) {
+    switch (eventObject.which) {
+        case 87:
+            control.w = false;
+            break;
+
+        case 65:
+            control.a = false;
+            break;
+
+        case 83:
+            control.s = false;
+            break;
+
+        case 68:
+            control.d = false;
+            break;
+
+        default:
+            break;
+    }
+
 });
