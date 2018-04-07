@@ -1,8 +1,9 @@
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
-
-app.listen(3000, "10.34.34.49");
+var Base64 = require('js-base64').Base64;
+app.listen(80, "10.34.34.49");
+var async = require('async');
 
 
 var path = require('path');
@@ -58,16 +59,67 @@ function serveStatic(response, cache, absPath) {
 
 
 var mapa = fs.readFileSync("map.json", "utf8");
-// console.log('{'+mapa+'}');
 map = JSON.parse(mapa);
 
-// Игровая механика 
+
+global.texture = [];
 global.players = [];
 
-io.on('connection', function(socket) {
+var mapa = fs.readFileSync("map.json", "utf8");
+map = JSON.parse(mapa);
 
-    // console.log(socket);
+io.on('connection', function(socket) {
+    texture = JSON.stringify(global.texture)
+    socket.emit('texture', texture);
+    socket.emit('map', map);
+
     console.log("user connect " + socket.id);
 
 
+});
+
+
+function getFiles (dirPath, callback) {
+
+    fs.readdir(dirPath, function (err, files) {
+        if (err) return callback(err);
+
+        var filePaths = [];
+        var name = [];
+        async.eachSeries(files, function (fileName, eachCallback) {
+            var filePath = path.join(dirPath, fileName);
+
+            fs.stat(filePath, function (err, stat) {
+                if (err) return eachCallback(err);
+
+                if (stat.isDirectory()) {
+                    getFiles(filePath, function (err, subDirFiles) {
+                        if (err) return eachCallback(err);
+
+                        filePaths = filePaths.concat(subDirFiles);
+                        eachCallback(null);
+                    });
+
+                } else {
+                    if (stat.isFile() && /\.png$/.test(filePath)) {
+                        filePaths.push(filePath);
+                        name = filePath.match(/[0-9]/)
+                        name.push(filePath.match(/[0-9]/));
+                    }
+
+                    eachCallback(null);
+                }
+            });
+        }, function (err) {
+            callback(err, filePaths, name);
+        });
+
+    });
+}
+
+
+getFiles('./texture', function (err, files, name) {
+    console.log("load texture ...")
+    console.log(err || files);
+    for (var i = 0; i < files.length; i++)  global.texture[i] = "data:image/png;base64," +fs.readFileSync(files[i], 'base64');
 });

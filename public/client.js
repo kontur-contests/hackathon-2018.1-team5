@@ -1,7 +1,7 @@
-var socket = io();
+var socket = io('10.34.34.49');
 
 var mapC = document.getElementById("map");
-var map = mapC.getContext("2d");
+var mapL = mapC.getContext("2d");
 
 mapC.width = 1024;
 mapC.height = 768;
@@ -23,10 +23,15 @@ objC.width = 1024;
 objC.height = 768;
 
 
-conn.hello();
 
-socket.on('adduser', function(data) {
-    name = data.player;
+window.map = {};
+
+socket.on('texture', function(d) {
+    localStorage.setItem("texture",d)
+});
+socket.on('map', function(d) {
+    console.log(d)
+    window.map = d
 });
 
 
@@ -40,64 +45,80 @@ var control = {
 }
 
 
+
+function draw(){
+    texture = JSON.parse(localStorage.getItem('texture'));
+    console.log(texture)
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+            x = 64 * i;
+            y = 64 * j;
+            mapL.drawImage(texture[0], 0, 0, 64, 64, x, y, 64, 64);
+            // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+        }
+    }
+
+}
+
+setInterval(draw, 1000/30)
+
+
 var centerX = 150;
 var centerY = 200;
 var radius = 100;
 var startingAngle = 1.25 * Math.PI;
 var endingAngle = 1.75 * Math.PI;
-
-// Рисуем дугу на основе этой информации
-// objI.arc(centerX, centerY, radius, startingAngle, endingAngle);
-// objI.stroke();
+// drawRotatedImage(man, 0, 0, 0);
+// drawRotatedImage(texture, 500, 0, 0);
 
 
-socket.on('up', function(data) {
-    number = 0;
-    // $('.info').text(JSON.stringify(data));
-    map.clearRect(0, 0, mapC.width, mapC.height);
-    objI.clearRect(0, 0, mapC.width, mapC.height);
-    objM.clearRect(0, 0, mapC.width, mapC.height);
+// socket.on('up', function(data) {
+//     number = 0;
+//     // $('.info').text(JSON.stringify(data));
+//     map.clearRect(0, 0, mapC.width, mapC.height);
+//     objI.clearRect(0, 0, mapC.width, mapC.height);
+//     objM.clearRect(0, 0, mapC.width, mapC.height);
 
 
-    for (var i = 0; i < data.map.mapa.length; i++) {
-        // data.map.mapa[i]
-        for (var j = 0; j < data.map.mapa[i].length; j++) {
+//     for (var i = 0; i < data.map.mapa.length; i++) {
+//         // data.map.mapa[i]
+//         for (var j = 0; j < data.map.mapa[i].length; j++) {
 
-            for (var k = 0; k < data.players.length; k++) {
-                if (data.players[k].name == socket.json.id) number = k;
-            }
+//             for (var k = 0; k < data.players.length; k++) {
+//                 if (data.players[k].name == socket.json.id) number = k;
+//             }
 
-            tx = data.map.mapa[j][i][0];
-            ty = data.map.mapa[j][i][1];
-            x = 64 * i;
-            y = 64 * j;
-            // x = x + data.players[number].x;
-            // y = y + data.players[number].y;
-            // console.log(tx + "/" + ty)
-            map.drawImage(texture, 64 * tx, 64 * ty, 64, 64, x, y, 64, 64);
+//             tx = data.map.mapa[j][i][0];
+//             ty = data.map.mapa[j][i][1];
+//             x = 64 * i;
+//             y = 64 * j;
+//             // x = x + data.players[number].x;
+//             // y = y + data.players[number].y;
+//             // console.log(tx + "/" + ty)
+//             map.drawImage(texture, 64 * tx, 64 * ty, 64, 64, x, y, 64, 64);
 
 
 
-            //player
-            for (var p = 0; p < data.players.length; p++) {
-                xP = data.players[p].x;
-                yP = data.players[p].y;
-                ratP = data.players[p].rat;
+//             //player
+//             for (var p = 0; p < data.players.length; p++) {
+//                 xP = data.players[p].x;
+//                 yP = data.players[p].y;
+//                 ratP = data.players[p].rat;
 
-                // objI.arc(xP, yP, radius, startingAngle, endingAngle);
-                // objI.stroke();
-                drawRotatedImage(man, xP, yP, ratP);
-            }
+//                 // objI.arc(xP, yP, radius, startingAngle, endingAngle);
+//                 // objI.stroke();
+//                 drawRotatedImage(man, xP, yP, ratP);
+//             }
 
 
 
-        }
-    }
+//         }
+//     }
 
-    // map.drawImage(texture, 74*5, 74*5, 64, 64, 0, 0, 64, 64);
+//     // map.drawImage(texture, 74*5, 74*5, 64, 64, 0, 0, 64, 64);
 
-    socket.emit('move', { player: name, control: control });
-});
+//     socket.emit('move', { player: name, control: control });
+// });
 
 
 
