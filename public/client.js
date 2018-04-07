@@ -50,7 +50,7 @@ socket.on('you', function(d) {
 });
 
 // $(document).ready(function() {
-    socket.emit('hello', { username: 'test' });
+socket.emit('hello', { username: 'test' });
 // });
 
 
@@ -82,23 +82,30 @@ function draw() {
     }
 
 
-    for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
-            x = 32 * i;
-            y = 32 * j;
-            mapL.drawImage(texture[window.maps[0][0].map[i][j].texture], 0, 0, 32, 32, x + window.player.x, y + window.player.y, 32, 32);
-        }
-    }
-    objM.drawImage(texture[15], 512, 368);
-    console.log(window.players)
-    for (var i = 0; i < window.players.length; i++) {
-        if (window.players[i].token != localStorage.getItem('token')) {
-            objM.drawImage(texture[15], window.players[i].x-window.player.x, window.players[i].y-window.player.y);
+    for (var j = 0; j < 16; j++) {
+        for (var i = 0; i < 16; i++) {
+            x = (64 * i) + 512;
+            y = (64 * j) + 368;
+            mapL.drawImage(texture[window.maps[0][0].map[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
         }
     }
 
-    if (control['s']) window.player.y = window.player.y + window.player.speed;
-    if (control['w']) window.player.y = window.player.y - window.player.speed;
+    objM.drawImage(texture[15], 512, 368);
+
+    for (var i = 0; i < window.players.length; i++) {
+        // console.log(window.players[i].x)
+        if (window.players[i].token != localStorage.getItem('token')) {
+            // objM.font = "bold 9px Verdana,sans-serif";
+            // objM.lineWidth = 1;
+            // objM.strokeStyle = "red";
+            // objM.strokeText(window.players[i].token, window.players[i].x-512, window.players[i].y);
+
+            objM.drawImage(texture[15], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
+        }
+    }
+    socket.emit('you', window.player);
+    if (control['s']) window.player.y = window.player.y - window.player.speed;
+    if (control['w']) window.player.y = window.player.y + window.player.speed;
     if (control['a']) window.player.x = window.player.x - window.player.speed;
     if (control['d']) window.player.x = window.player.x + window.player.speed;
 

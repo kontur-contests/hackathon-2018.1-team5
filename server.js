@@ -80,8 +80,6 @@ io.on('connection', function(socket) {
     socket.on('hello', function(d) {
         //
         token = md5(d.username + socket.id)
-        console.log('1')
-        console.log(global.players)
         p = {
             name: "",
             socket: "",
@@ -98,8 +96,6 @@ io.on('connection', function(socket) {
         p.socket = socket.id
         p.token = token
         global.players.push(p)
-        // console.log(newPlayer('neroslava', socket.id, token))
-        console.log(global.players)
         socket.emit('hello', {
             username: d.username,
             token: token
@@ -109,8 +105,8 @@ io.on('connection', function(socket) {
     socket.on('you', function(d) {
         for (var i = 0; i < global.players.length; i++) {
             if (global.players[i].socket == socket.id) {
-                global.players[i].socket.x = d.x
-                global.players[i].socket.y = d.y
+                global.players[i].x = d.x
+                global.players[i].y = d.y
             }
         }
     });
