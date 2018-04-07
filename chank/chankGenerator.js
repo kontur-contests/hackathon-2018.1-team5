@@ -20,8 +20,6 @@ function createMap(){
 	var max = 1;
 	var chankMapArray = [[]];
 
-
-
 	fillChankArray(chankMapArray, 1, min, max);
 
 	return chankMapArray;
@@ -50,7 +48,6 @@ function fillChankArray(chankMapArray, flag, min, max){
 		for (var y = 0; y <= chankSize.y; y++){
 		 	chankMapArray[x][y] = createMapObject(min, max);
 		}
-		count = x;
 	}
 }
 
@@ -58,8 +55,9 @@ function fillChankArray(chankMapArray, flag, min, max){
 function getTexture(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1)
     rand = Math.round(rand);
+
     return Math.abs(rand);
-  }
+}
 
 function createChank(x, y){
 	var chank = {
@@ -69,7 +67,6 @@ function createChank(x, y){
 		obj: createObjMap()
 	}
 
-	console.log(JSON.stringify(chank));
+	return JSON.stringify(chank);
+	// console.log();
 }
-
-createChank(1,1);
