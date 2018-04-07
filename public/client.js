@@ -27,10 +27,9 @@ objC.height = 768;
 window.map = {};
 
 socket.on('texture', function(d) {
-    localStorage.setItem("texture",d)
+    localStorage.setItem("texture", JSON.stringify(d))
 });
 socket.on('map', function(d) {
-    console.log(d)
     window.map = d
 });
 
@@ -47,16 +46,17 @@ var control = {
 
 
 function draw(){
-    texture = JSON.parse(localStorage.getItem('texture'));
-    console.log(texture)
-    for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
-            x = 64 * i;
-            y = 64 * j;
-            mapL.drawImage(texture[0], 0, 0, 64, 64, x, y, 64, 64);
-            // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
-        }
-    }
+    texture = JSON.parse(localStorage.texture);
+    // console.log(JSON.parse(texture))
+    console.log(texture[0])
+    // for (var i = 0; i < 16; i++) {
+    //     for (var j = 0; j < 16; j++) {
+    //         x = 64 * i;
+    //         y = 64 * j;
+    //         mapL.drawImage(texture[1], 0, 0, 64, 64, x, y, 64, 64);
+    //         // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+    //     }
+    // }
 
 }
 
