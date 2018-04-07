@@ -2,10 +2,11 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.34.49");
+app.listen(80, "10.34.32.57");
 var async = require('async');
 var md5 = require('md5');
 var mapGenerator = require('./map/mapGenerator');
+var player = require('./player/player')
 
 
 var path = require('path');
@@ -81,22 +82,9 @@ io.on('connection', function(socket) {
         //
 
         token = md5(d.username + socket.id)
-        p = {
-            name: "",
-            socket: "",
-            token: "",
-            oxygenLevel: 100,
-            temperature: 36.6,
-            energyLevel: 100,
-            x: 0,
-            y: 0,
-            rotation: 0,
-            inventory: [],
-            oxygen: 100
-        }
-        p.socket = socket.id
-        p.token = token
-        global.players.push(p)
+        var newPlayer = player.newPlayer(d.name, socket.id, token);
+        global.players.push(newPlayer);
+        // console.log(newPlayer);
         socket.emit('hello', {
             username: d.username,
             token: token
@@ -193,7 +181,7 @@ function getFiles(dirPath, callback) {
 
 getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
-    console.log(err || files);
+    // console.log(err || files);
     for (var i = 0; i < files.length; i++) {
         global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }
