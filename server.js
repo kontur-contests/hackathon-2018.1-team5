@@ -55,11 +55,14 @@ function serveStatic(response, cache, absPath) {
 }
 
 
+for (var i = 0; i < Things.length; i++) {
+    Things[i]
+}
+global.players = [];
 
 io.on('connection', function(socket) {
 
-    // console.log(socket);
     console.log("user connect " + socket.id);
-  
+    global.players[player.length].idSocker = socket.id;
 
 });
