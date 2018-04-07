@@ -85,12 +85,6 @@ io.on('connection', function(socket) {
     global.players.push(player.newPlayer('neroslava'));
     console.log(global.players)
 
-    // socket.emit('hi', {
-    //     username: data.username, 
-    //     token: token
-    // });
-    // });
-
 });
 
 

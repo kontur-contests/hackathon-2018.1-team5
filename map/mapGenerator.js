@@ -67,6 +67,17 @@ function createChank(x, y){
 		obj: createObjMap()
 	}
 
-	return JSON.stringify(chank);
-	// console.log();
+	return chank;
+}
+
+module.exports.generateMap = function(){
+	var map = [];
+	for (var x = -8; x < 8; x++) {
+		map[x] = [];
+		for(var y = -8 y < 8; y++){
+			map[x][y] = createChank(x,y);
+		}
+	}
+
+	return map;
 }
