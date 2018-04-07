@@ -2,7 +2,7 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.32.57");
+app.listen(80, "10.34.34.49");
 var async = require('async');
 var md5 = require('md5');
 var mapGenerator = require('./map/mapGenerator');
@@ -59,9 +59,8 @@ function serveStatic(response, cache, absPath) {
 }
 
 //генерация карты
-var mapa = mapGenerator.generateMap();
-map = mapa;
-console.log(map);
+var map = mapGenerator.generateMap();
+// console.log(map);
 
 global.texture = [];
 global.players = [];
@@ -98,7 +97,7 @@ function newPlayer(n, s, t) {
 
 io.on('connection', function(socket) {
     // texture = global.texture
-    socket.emit('texture', texture);
+    socket.emit('texture', global.texture);
     socket.emit('map', map);
 
     console.log("user connect " + socket.id);
@@ -192,8 +191,6 @@ getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
     console.log(err || files);
     for (var i = 0; i < files.length; i++) {
-        if(/land?.png$/.test(files[i])){
-            global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
-        }
+        global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }
 })

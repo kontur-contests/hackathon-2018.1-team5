@@ -71,7 +71,8 @@ function draw() {
     mapL.clearRect(0, 0, mapC.width, mapC.height);
     objI.clearRect(0, 0, mapC.width, mapC.height);
     objM.clearRect(0, 0, mapC.width, mapC.height);
-    texture = JSON.parse(localStorage.texture);
+    texture = JSON.parse(localStorage.getItem('texture'));
+    console.log([window.maps[0][0].map[0][0].texture])
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
         texture[i] = new Image();
@@ -84,7 +85,8 @@ function draw() {
                 x = 32 * i;
                 y = 32 * j;
                 // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
-                mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
+                console.log(texture[window.maps[0].map[i][j].texture])
+                // mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
                 // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
             }
         }
@@ -103,14 +105,6 @@ function draw() {
 
 setInterval(draw, 1000 / 30)
 
-
-var centerX = 150;
-var centerY = 200;
-var radius = 100;
-var startingAngle = 1.25 * Math.PI;
-var endingAngle = 1.75 * Math.PI;
-// drawRotatedImage(man, 0, 0, 0);
-// drawRotatedImage(texture, 500, 0, 0);
 
 
 // socket.on('up', function(data) {
