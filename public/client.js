@@ -1,12 +1,5 @@
 var socket = io();
 
-conn = {
-    hello: function() {
-        socket.emit('hello', { user: 'neroslava' });
-    }
-}
-
-//canvas
 
 var mapC = document.getElementById("map");
 var map = mapC.getContext("2d");
