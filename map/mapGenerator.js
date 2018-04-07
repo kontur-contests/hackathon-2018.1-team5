@@ -2,6 +2,15 @@
 function createMapObject(min, max){
 	var mapObj = {
 		type:1,
+		texture: "land" + getTexture(min, max)
+	}
+	return mapObj;
+}
+
+//возвращает объект на карте
+function createObject(min, max){
+	var mapObj = {
+		type:1,
 		texture: getTexture(min, max)
 	}
 	return mapObj;
@@ -16,11 +25,11 @@ var chankSize = {
 //создаёт массив карты
 function createMap(){
 	//диапазон id у ландшафта
-	var min = 0;
-	var max = 1;
+	var min = 2;
+	var max = 4;
 	var chankMapArray = [[]];
-
-	fillChankArray(chankMapArray, 1, min, max);
+	// console.log("create land map");
+	fillChankArray(chankMapArray, 0, min, max);
 
 	return chankMapArray;
 }
@@ -31,8 +40,8 @@ function createObjMap(){
 	var min = 2;
 	var max = 3;
 	var chankMapArray = [];
-
-	fillChankArray(chankMapArray, 2, min, max);
+	// console.log("create map for objects");
+	fillChankArray(chankMapArray, 1, min, max);
 
 	return chankMapArray;
 }
@@ -46,7 +55,15 @@ function fillChankArray(chankMapArray, flag, min, max){
 	for (var x = 0; x <= chankSize.x; x++) {
 		chankMapArray[x] = [];
 		for (var y = 0; y <= chankSize.y; y++){
-		 	chankMapArray[x][y] = createMapObject(min, max);
+			switch(flag){
+				case 0:
+				 	chankMapArray[x][y] = createMapObject(min, max);
+				 	// console.log(chankMapArray[x][y]);
+				 	break;
+				case 1:
+				 	chankMapArray[x][y] = createObject(min, max);
+					break;
+			}
 		}
 	}
 }
@@ -67,6 +84,19 @@ function createChank(x, y){
 		obj: createObjMap()
 	}
 
-	return JSON.stringify(chank);
-	// console.log();
+	return chank;
+}
+
+module.exports.generateMap = function(){
+	var map = [];
+	for (var x = -8; x < 8; x++) {
+		map[x] = [];
+		for(var y = -8; y < 8; y++){
+			map[x][y] = createChank(x,y);
+			// console.log(map[x][y]);
+		}
+		// console.log(map[x]);
+	}
+
+	return map;
 }

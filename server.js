@@ -5,6 +5,7 @@ var Base64 = require('js-base64').Base64;
 app.listen(80, "10.34.34.49");
 var async = require('async');
 var md5 = require('md5');
+var mapGenerator = require('./map/mapGenerator');
 
 
 var path = require('path');
@@ -59,9 +60,12 @@ function serveStatic(response, cache, absPath) {
 
 
 
-var mapa = fs.readFileSync("map.json", "utf8");
-map = JSON.parse(mapa);
-
+// var mapa = fs.readFileSync("map.json", "utf8");
+// map = JSON.parse(mapa);
+//генерация карты
+var mapa = mapGenerator.generateMap();
+map = mapa;
+// console.log(map);
 
 global.texture = [];
 global.players = [];
@@ -92,10 +96,9 @@ function newPlayer(n, s, t) {
     p.name = n;
     p.socket = s;
     p.token = t;
+
     return p
 }
-
-
 
 io.on('connection', function(socket) {
     // texture = global.texture
@@ -107,6 +110,7 @@ io.on('connection', function(socket) {
     socket.on('hi', function(d) {
         //
         token = md5(d.username)
+
         global.players.push(newPlayer('neroslava', socket.id, token));
         console.log(global.players)
 
@@ -191,5 +195,9 @@ function getFiles(dirPath, callback) {
 getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
     console.log(err || files);
-    for (var i = 0; i < files.length; i++) global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
-});
+    for (var i = 0; i < files.length; i++) {
+        if(/land?.png$/.test(files[i])){
+            global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
+        }
+    }
+})
