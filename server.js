@@ -1,7 +1,7 @@
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
-
+var Base64 = require('js-base64').Base64;
 app.listen(3000, "10.34.34.49");
 
 
@@ -76,6 +76,6 @@ io.on('connection', function(socket) {
 });
 
 var tex = fs.readFileSync("texture/1.png", "utf8");
-var img = new Buffer(tex, 'base64');
+// var img = new Buffer(tex, 'base64');
 
-console.log(tex)
+console.log(Base64.encode(tex))
