@@ -59,7 +59,6 @@ function serveStatic(response, cache, absPath) {
 
 
 var mapa = fs.readFileSync("map.json", "utf8");
-// console.log('{'+mapa+'}');
 map = JSON.parse(mapa);
 
 
@@ -72,6 +71,7 @@ map = JSON.parse(mapa);
 io.on('connection', function(socket) {
     texture = JSON.stringify(global.texture)
     socket.emit('texture', texture);
+    socket.emit('map', map);
 
     console.log("user connect " + socket.id);
 
@@ -121,5 +121,5 @@ function getFiles (dirPath, callback) {
 getFiles('./texture', function (err, files, name) {
     console.log("load texture ...")
     console.log(err || files);
-    for (var i = 0; i < files.length; i++)  global.texture[i] = fs.readFileSync(files[i], 'base64');
+    for (var i = 0; i < files.length; i++)  global.texture[i] = "data:image/png;base64," +fs.readFileSync(files[i], 'base64');
 });
