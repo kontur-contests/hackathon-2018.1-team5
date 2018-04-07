@@ -64,6 +64,9 @@ map = JSON.parse(mapa);
 // Игровая механика 
 global.players = [];
 
+var mapa = fs.readFileSync("map.json", "utf8");
+map = JSON.parse(mapa);
+
 io.on('connection', function(socket) {
 
     // console.log(socket);
@@ -71,3 +74,8 @@ io.on('connection', function(socket) {
 
 
 });
+
+var tex = fs.readFileSync("texture/1.png", "utf8");
+var img = new Buffer(tex, 'base64');
+
+console.log(tex)

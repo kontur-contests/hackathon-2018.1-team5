@@ -46,9 +46,6 @@ var radius = 100;
 var startingAngle = 1.25 * Math.PI;
 var endingAngle = 1.75 * Math.PI;
 
-// Рисуем дугу на основе этой информации
-// objI.arc(centerX, centerY, radius, startingAngle, endingAngle);
-// objI.stroke();
 
 
 socket.on('up', function(data) {
