@@ -1,8 +1,10 @@
 //возвращает объект карты
 function createMapObject(min, max){
+	var a = getTexture(0, 9);
+	var b = getTexture(0, 99);
 	var mapObj = {
 		type:1,
-		texture: getTexture(min, max)
+		texture: a != b? -1: getTexture(min, max)
 	}
 	return mapObj;
 }

@@ -1,4 +1,4 @@
-var socket = io('10.34.32.57');
+var socket = io('10.34.34.49');
 
 var mapC = document.getElementById("map");
 var mapL = mapC.getContext("2d");
