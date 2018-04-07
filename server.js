@@ -192,8 +192,8 @@ function getFiles(dirPath, callback) {
 
 
 getFiles('./texture', function(err, files, name) {
-    // console.log("load texture ...")
-    // console.log(err || files);
+    console.log("load texture ...")
+    console.log(err || files);
     for (var i = 0; i < files.length; i++) {
         global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }
