@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "dependencies": {
+    "async": "^2.6.0",
     "js-base64": "^2.4.3",
     "socket.io": "^2.1.0"
   }
