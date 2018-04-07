@@ -37,8 +37,8 @@ function createMap(){
 //создаёт массив карты объектов
 function createObjMap(){
 	//диапазаон id у объектов
-	var min = 2;
-	var max = 3;
+	var min = 4;
+	var max = 6;
 	var chankMapArray = [];
 	// console.log("create map for objects");
 	fillChankArray(chankMapArray, 1, min, max);
