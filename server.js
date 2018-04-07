@@ -62,12 +62,17 @@ function serveStatic(response, cache, absPath) {
 
 // var mapa = fs.readFileSync("map.json", "utf8");
 // map = JSON.parse(mapa);
-
+//генерация карты
 var mapa = mapGenerator.generateMap();
-map = JSON.parse(mapa);
+map = mapa;
+// console.log(map);
 
 global.texture = [];
 global.players = [];
+
+var mapa = fs.readFileSync("map.json", "utf8");
+map = JSON.parse(mapa);
+// console.log(map[0])
 
 var player = {
     name: "",
@@ -79,7 +84,8 @@ var player = {
     x: 0,
     y: 0,
     rotation: 0,
-    inventory: []
+    inventory: [],
+    oxygen: 100
 }
 
 // n - name
@@ -90,10 +96,9 @@ function newPlayer(n, s, t) {
     p.name = n;
     p.socket = s;
     p.token = t;
+
     return p
 }
-
-
 
 io.on('connection', function(socket) {
     // texture = global.texture
@@ -103,10 +108,48 @@ io.on('connection', function(socket) {
     console.log("user connect " + socket.id);
 
     socket.on('hi', function(d) {
+        //
         token = md5(d.username)
-        // console.log(newPlayer('neroslava', socket.id, token))
-        global.players.push(newPlayer('test', socket.id, token));
-        // console.log(global.players)
+
+        global.players.push(newPlayer('neroslava', socket.id, token));
+        console.log(global.players)
+
+        // socket.emit('hi', {
+        //     username: d.username, 
+        //     token: token
+        // });
+    });
+
+
+    // socket.on('move', function(d) {
+    //     if (players[0] !== undefined) {
+    //         var number;
+    //         //помер нашего пользователя 
+    //         for (var i = 0; i < global.players.length; i++) {
+    //             if (global.players[i].token == d.token) number = i;
+    //         }
+    //         console.log(global.players[0].y)
+    //         var rotation = Math.atan2(d.control.mouseX, d.control.mouseY);
+    //         rotation = rotation * 180 / 3.14159265;
+    //         rotation = 450 - rotation;
+
+    //         if (d.control['s']) global.players[number].y = global.players[number].y + 1;
+    //         if (d.control['w']) global.players[number].y = global.players[number].y - 1;
+    //         if (d.control['a']) global.players[number].x = global.players[number].x - 1;
+    //         if (d.control['d']) global.players[number].x = global.players[number].x + 1;
+    //         // global.players[number].rotation = rotation;
+    //         // console.log(data);
+    //     }
+    // });
+
+    setInterval(function() {
+        for (var i = 0; i < global.players.length; i++) {
+
+            if (global.players[i].oxygen != 0) global.players[i].oxygen = global.players[i].oxygen - 0.001;
+            // io.sockets.sockets[global.players[i].socket].emit('you', players[i])
+        }
+    }, 1000 / 30)
+
 });
 
 
@@ -152,5 +195,9 @@ function getFiles(dirPath, callback) {
 getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
     console.log(err || files);
-    for (var i = 0; i < files.length; i++) global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
-});
+    for (var i = 0; i < files.length; i++) {
+        if(/land?.png$/.test(files[i])){
+            global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
+        }
+    }
+})
