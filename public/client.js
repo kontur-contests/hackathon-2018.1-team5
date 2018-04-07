@@ -38,7 +38,7 @@ socket.on('map', function(d) {
     window.maps = d;
     console.log(window.maps);
 });
-socket.on('hi', function(d) {
+socket.on('hello', function(d) {
     localStorage.setItem("token", d.token)
 });
 
@@ -46,9 +46,9 @@ socket.on('you', function(d) {
     window.player.oxygen = d.oxygen;
 });
 
-$(document).ready(function() {
-    socket.emit('hi', { username: 'test' });
-});
+// $(document).ready(function() {
+    socket.emit('hello', { username: 'test' });
+// });
 
 
 
@@ -72,27 +72,22 @@ function draw() {
     objI.clearRect(0, 0, mapC.width, mapC.height);
     objM.clearRect(0, 0, mapC.width, mapC.height);
     texture = JSON.parse(localStorage.getItem('texture'));
-    console.log([window.maps[0][0].map[0][0].texture])
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
         texture[i] = new Image();
         texture[i].src = src;
     }
 
-    if(window.maps){
-        for (var i = 0; i < 16; i++) {
-            for (var j = 0; j < 16; j++) {
-                x = 32 * i;
-                y = 32 * j;
-                // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
-                console.log(texture[window.maps[0].map[i][j].texture])
-                // mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
-                // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
-            }
+
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+            x = 32 * i;
+            y = 32 * j;
+            mapL.drawImage(texture[window.maps[0][0].map[i][j].texture], 0, 0, 32, 32, x + window.player.x, y + window.player.y, 32, 32);
         }
-        objM.drawImage(texture[15], 512 + window.player.x, 368 + window.player.y);
-    // socket.emit('move', { token:  localStorage.getItem("token"), control: control });
     }
+    objM.drawImage(texture[15], 512, 368);
+
 
     if (control['s']) window.player.y = window.player.y + window.player.speed;
     if (control['w']) window.player.y = window.player.y - window.player.speed;

@@ -96,23 +96,24 @@ function newPlayer(n, s, t) {
 }
 
 io.on('connection', function(socket) {
+    console.log(global.players)
     // texture = global.texture
     socket.emit('texture', global.texture);
     socket.emit('map', map);
 
     console.log("user connect " + socket.id);
 
-    socket.on('hi', function(d) {
+    socket.on('hello', function(d) {
         //
-        token = md5(d.username)
+        token = md5(d.username+socket.id)
 
-        global.players.push(newPlayer('neroslava', socket.id, token));
-        console.log(global.players)
-
-        // socket.emit('hi', {
-        //     username: d.username, 
-        //     token: token
-        // });
+        // global.players[global.players.length] = newPlayer('neroslava', socket.id, token);
+        console.log(newPlayer('neroslava', socket.id, token))
+        // console.log('<asdas></asdas>')
+        socket.emit('hi', {
+            username: d.username, 
+            token: token
+        });
     });
 
 

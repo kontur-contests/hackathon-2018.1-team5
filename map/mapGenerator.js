@@ -2,7 +2,7 @@
 function createMapObject(min, max){
 	var mapObj = {
 		type:1,
-		texture: "land" + getTexture(min, max)
+		texture: getTexture(min, max)
 	}
 	return mapObj;
 }
@@ -25,8 +25,8 @@ var chankSize = {
 //создаёт массив карты
 function createMap(){
 	//диапазон id у ландшафта
-	var min = 2;
-	var max = 4;
+	var min = 1;
+	var max = 3;
 	var chankMapArray = [[]];
 	// console.log("create land map");
 	fillChankArray(chankMapArray, 0, min, max);
