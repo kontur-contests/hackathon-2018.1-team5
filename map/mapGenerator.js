@@ -2,7 +2,7 @@
 function createMapObject(min, max){
 	var mapObj = {
 		type:1,
-		texture: "land" + getTexture(min, max)
+		texture: getTexture(min, max)
 	}
 	return mapObj;
 }
@@ -25,8 +25,8 @@ var chankSize = {
 //создаёт массив карты
 function createMap(){
 	//диапазон id у ландшафта
-	var min = 2;
-	var max = 4;
+	var min = 1;
+	var max = 3;
 	var chankMapArray = [[]];
 	// console.log("create land map");
 	fillChankArray(chankMapArray, 0, min, max);
@@ -89,10 +89,13 @@ function createChank(x, y){
 
 module.exports.generateMap = function(){
 	var map = [];
-	for (var x = -8; x < 8; x++) {
-		map[x] = [];
-		for(var y = -8; y < 8; y++){
-			map[x][y] = createChank(x,y);
+
+
+
+	for (var x = -4; x < 4; x++) {
+
+		for(var y = -4; y < 4; y++){
+			map.push(createChank(x,y));
 			// console.log(map[x][y]);
 		}
 		// console.log(map[x]);

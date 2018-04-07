@@ -27,7 +27,7 @@ window.player = {
     y: 0,
     rotation: 0,
     oxygen: 0,
-    speed: 2
+    speed: 4
 }
 
 
@@ -36,9 +36,12 @@ socket.on('texture', function(d) {
 });
 socket.on('map', function(d) {
     window.maps = d;
-    console.log(window.maps);
+    // console.log(window.maps);
 });
-socket.on('hi', function(d) {
+socket.on('players', function(d) {
+    window.players = d;
+});
+socket.on('hello', function(d) {
     localStorage.setItem("token", d.token)
 });
 
@@ -46,9 +49,9 @@ socket.on('you', function(d) {
     window.player.oxygen = d.oxygen;
 });
 
-$(document).ready(function() {
-    socket.emit('hi', { username: 'test' });
-});
+// $(document).ready(function() {
+socket.emit('hello', { username: 'test' });
+// });
 
 
 
@@ -71,42 +74,91 @@ function draw() {
     mapL.clearRect(0, 0, mapC.width, mapC.height);
     objI.clearRect(0, 0, mapC.width, mapC.height);
     objM.clearRect(0, 0, mapC.width, mapC.height);
-    texture = JSON.parse(localStorage.texture);
+    texture = JSON.parse(localStorage.getItem('texture'));
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
         texture[i] = new Image();
         texture[i].src = src;
     }
 
-    for (var i = 0; i < 16; i++) {
+    for (var l = 0; l < 64; l++) {
         for (var j = 0; j < 16; j++) {
-            x = 32 * i;
-            y = 32 * j;
-            // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
-            mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
-            // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+            for (var i = 0; i < 16; i++) {
+                x = (64 * i) + 512;
+                x = x + window.maps[l].x * 1024;
+                y = (64 * j) + 368;
+                y = y + window.maps[l].y * 1024;
+                mapL.drawImage(texture[window.maps[l].map[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+            }
         }
     }
-    objM.drawImage(texture[15], 512 + window.player.x, 368 + window.player.y);
-    // socket.emit('move', { token:  localStorage.getItem("token"), control: control });
+    drawRotatedImage(texture[11], 512, 368, window.player.rotation);
 
+    for (var i = 0; i < window.players.length; i++) {
+        // console.log(window.players[i].x)
+        if (window.players[i].token != localStorage.getItem('token')) {
+            objM.font = "14px Tahoma";
+            objM.strokeStyle = "black";
+            objM.strokeText(window.players[i].token, window.players[i].x + 400 - window.player.x, -window.players[i].y + 335 + window.player.y);
+            drawRotatedImage(texture[11], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
+            // objM.drawImage(texture[11], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
+        }
+    }
+    socket.emit('you', window.player);
 
-    if (control['s']) window.player.y = window.player.y + window.player.speed;
-    if (control['w']) window.player.y = window.player.y - window.player.speed;
+    rotation = Math.atan2(control.mouseX, control.mouseY);
+    rotation = rotation * 180 / 3.14159265;
+    rotation = 450 - rotation;
+    if (control['s']) window.player.y = window.player.y - window.player.speed;
+    if (control['w']) window.player.y = window.player.y + window.player.speed;
     if (control['a']) window.player.x = window.player.x - window.player.speed;
     if (control['d']) window.player.x = window.player.x + window.player.speed;
-
-    console.log(window.player)
-    console.log(control)
+    window.player.rotation = rotation;
+    // console.log(window.player)
+    // console.log(control)
 }
-
-
 
 setInterval(draw, 1000 / 30)
 
 
 
+// socket.on('up', function(data) {
+//     number = 0;
+//     // $('.info').text(JSON.stringify(data));
+//     map.clearRect(0, 0, mapC.width, mapC.height);
+//     objI.clearRect(0, 0, mapC.width, mapC.height);
+//     objM.clearRect(0, 0, mapC.width, mapC.height);
 
+
+//     for (var i = 0; i < data.map.mapa.length; i++) {
+//         // data.map.mapa[i]
+//         for (var j = 0; j < data.map.mapa[i].length; j++) {
+
+//             for (var k = 0; k < data.players.length; k++) {
+//                 if (data.players[k].name == socket.json.id) number = k;
+//             }
+
+//             tx = data.map.mapa[j][i][0];
+//             ty = data.map.mapa[j][i][1];
+//             x = 64 * i;
+//             y = 64 * j;
+//             // x = x + data.players[number].x;
+//             // y = y + data.players[number].y;
+//             // console.log(tx + "/" + ty)
+//             map.drawImage(texture, 64 * tx, 64 * ty, 64, 64, x, y, 64, 64);
+
+
+
+//             //player
+//             for (var p = 0; p < data.players.length; p++) {
+//                 xP = data.players[p].x;
+//                 yP = data.players[p].y;
+//                 ratP = data.players[p].rat;
+
+//                 // objI.arc(xP, yP, radius, startingAngle, endingAngle);
+//                 // objI.stroke();
+//                 drawRotatedImage(man, xP, yP, ratP);
+//             }
 
 var TO_RADIANS = Math.PI / 180;
 
