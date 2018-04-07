@@ -45,22 +45,27 @@ var control = {
 
 
 
-function draw(){
+function draw() {
     texture = JSON.parse(localStorage.texture);
+    for (var i = 0; i < texture.length; i++) {
+        src = texture[i];
+        texture[i] = new Image();
+        texture[i].src = src;
+    }
     // console.log(JSON.parse(texture))
     console.log(texture[0])
-    // for (var i = 0; i < 16; i++) {
-    //     for (var j = 0; j < 16; j++) {
-    //         x = 64 * i;
-    //         y = 64 * j;
-    //         mapL.drawImage(texture[1], 0, 0, 64, 64, x, y, 64, 64);
-    //         // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
-    //     }
-    // }
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+            x = 32 * i;
+            y = 32 * j;
+            mapL.drawImage(texture[4], 0, 0, 32, 32, x, y, 32, 32);
+            // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
+        }
+    }
 
 }
 
-setInterval(draw, 1000/30)
+setInterval(draw, 1000 / 30)
 
 
 var centerX = 150;

@@ -75,6 +75,10 @@ io.on('connection', function(socket) {
 
     console.log("user connect " + socket.id);
 
+    socket.on('hi', function(data) {
+
+
+    });
 
 });
 
