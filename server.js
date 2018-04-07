@@ -79,6 +79,7 @@ io.on('connection', function(socket) {
 
     socket.on('hello', function(d) {
         //
+
         token = md5(d.username + socket.id)
         p = {
             name: "",
@@ -107,6 +108,7 @@ io.on('connection', function(socket) {
             if (global.players[i].socket == socket.id) {
                 global.players[i].x = d.x
                 global.players[i].y = d.y
+                global.players[i].rotation = d.rotation
             }
         }
     });

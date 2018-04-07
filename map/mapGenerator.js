@@ -89,10 +89,13 @@ function createChank(x, y){
 
 module.exports.generateMap = function(){
 	var map = [];
-	for (var x = -8; x < 8; x++) {
-		map[x] = [];
-		for(var y = -8; y < 8; y++){
-			map[x][y] = createChank(x,y);
+
+
+
+	for (var x = -4; x < 4; x++) {
+
+		for(var y = -4; y < 4; y++){
+			map.push(createChank(x,y));
 			// console.log(map[x][y]);
 		}
 		// console.log(map[x]);
