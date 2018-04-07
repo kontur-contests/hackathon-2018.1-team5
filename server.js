@@ -114,26 +114,6 @@ io.on('connection', function(socket) {
     });
 
 
-    // socket.on('move', function(d) {
-    //     if (players[0] !== undefined) {
-    //         var number;
-    //         //помер нашего пользователя 
-    //         for (var i = 0; i < global.players.length; i++) {
-    //             if (global.players[i].token == d.token) number = i;
-    //         }
-    //         console.log(global.players[0].y)
-    //         var rotation = Math.atan2(d.control.mouseX, d.control.mouseY);
-    //         rotation = rotation * 180 / 3.14159265;
-    //         rotation = 450 - rotation;
-
-    //         if (d.control['s']) global.players[number].y = global.players[number].y + 1;
-    //         if (d.control['w']) global.players[number].y = global.players[number].y - 1;
-    //         if (d.control['a']) global.players[number].x = global.players[number].x - 1;
-    //         if (d.control['d']) global.players[number].x = global.players[number].x + 1;
-    //         // global.players[number].rotation = rotation;
-    //         // console.log(data);
-    //     }
-    // });
 
     setInterval(function() {
         for (var i = 0; i < global.players.length; i++) {

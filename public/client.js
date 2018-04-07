@@ -97,7 +97,18 @@ function draw() {
             }
         }
     }
-    drawRotatedImage(texture[8], 512, 368, window.player.rotation);
+    for (var l = 0; l < 64; l++) {
+        for (var j = 0; j < 16; j++) {
+            for (var i = 0; i < 16; i++) {
+                x = (64 * i) + 512;
+                x = x + window.maps[l].x * 1024;
+                y = (64 * j) + 368;
+                y = y + window.maps[l].y * 1024;
+                objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+            }
+        }
+    }
+    drawRotatedImage(texture[7], 512, 368, window.player.rotation);
 
     for (var i = 0; i < window.players.length; i++) {
         // console.log(window.players[i].x)
@@ -105,7 +116,7 @@ function draw() {
             objM.font = "14px Tahoma";
             objM.strokeStyle = "black";
             objM.strokeText(window.players[i].token, window.players[i].x + 400 - window.player.x, -window.players[i].y + 335 + window.player.y);
-            drawRotatedImage(texture[8], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
+            drawRotatedImage(texture[7], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
             // objM.drawImage(texture[11], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
         }
     }
