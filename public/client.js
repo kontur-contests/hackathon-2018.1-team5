@@ -22,6 +22,13 @@ var objI = objC.getContext("2d");
 objC.width = 1024;
 objC.height = 768;
 
+var inteface = document.getElementById("obj");
+var inteface = inteface.getContext("2d");
+
+
+inteface.width = 1024;
+inteface.height = 768;
+
 window.player = {
     x: 0,
     y: 0,
@@ -92,7 +99,7 @@ function draw() {
             }
         }
     }
-    drawRotatedImage(texture[11], 512, 368, window.player.rotation);
+    drawRotatedImage(texture[8], 512, 368, window.player.rotation);
 
     for (var i = 0; i < window.players.length; i++) {
         // console.log(window.players[i].x)
@@ -100,7 +107,7 @@ function draw() {
             objM.font = "14px Tahoma";
             objM.strokeStyle = "black";
             objM.strokeText(window.players[i].token, window.players[i].x + 400 - window.player.x, -window.players[i].y + 335 + window.player.y);
-            drawRotatedImage(texture[11], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
+            drawRotatedImage(texture[8], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
             // objM.drawImage(texture[11], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
         }
     }

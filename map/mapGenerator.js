@@ -25,7 +25,7 @@ var chankSize = {
 //создаёт массив карты
 function createMap(){
 	//диапазон id у ландшафта
-	var min = 1;
+	var min = 0;
 	var max = 3;
 	var chankMapArray = [[]];
 	// console.log("create land map");
