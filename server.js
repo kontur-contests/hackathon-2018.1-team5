@@ -1,3 +1,5 @@
+var player = require('./player/player');
+
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
@@ -75,10 +77,14 @@ io.on('connection', function(socket) {
 
     console.log("user connect " + socket.id);
 
-    socket.on('hi', function(data) {
-
-
-    });
+    // socket.on('hi', function(data) {
+    var obj = player.newPlayer(data.username);
+    global.players.push(obj);
+    // socket.emit('hi', {
+    //     username: data.username, 
+    //     token: token
+    // });
+    // });
 
 });
 
