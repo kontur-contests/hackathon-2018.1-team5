@@ -104,7 +104,7 @@ function draw() {
                 x = x + window.maps[l].x * 1024;
                 y = (64 * j) + 368;
                 y = y + window.maps[l].y * 1024;
-                objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+                if(window.maps[l].obj[i][j].texture > 0) objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
             }
         }
     }
