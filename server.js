@@ -5,6 +5,7 @@ var Base64 = require('js-base64').Base64;
 app.listen(80, "10.34.34.49");
 var async = require('async');
 var md5 = require('md5');
+var mapGenerator = require('./map/mapGenerator');
 
 
 var path = require('path');
@@ -59,16 +60,14 @@ function serveStatic(response, cache, absPath) {
 
 
 
-var mapa = fs.readFileSync("map.json", "utf8");
-map = JSON.parse(mapa);
+// var mapa = fs.readFileSync("map.json", "utf8");
+// map = JSON.parse(mapa);
 
+var mapa = mapGenerator.generateMap();
+map = JSON.parse(mapa);
 
 global.texture = [];
 global.players = [];
-
-var mapa = fs.readFileSync("map.json", "utf8");
-map = JSON.parse(mapa);
-console.log(map[0])
 
 var player = {
     name: "",

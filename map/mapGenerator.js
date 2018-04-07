@@ -79,5 +79,5 @@ module.exports.generateMap = function(){
 		}
 	}
 
-	return map;
+	return JSON.Stringify(map);
 }
