@@ -34,6 +34,8 @@ socket.on('map', function(d) {
 });
 
 
+console.log(window.map)
+
 var control = {
     "w": false,
     "a": false,
@@ -52,8 +54,7 @@ function draw() {
         texture[i] = new Image();
         texture[i].src = src;
     }
-    // console.log(JSON.parse(texture))
-    console.log(texture[0])
+
     for (var i = 0; i < 16; i++) {
         for (var j = 0; j < 16; j++) {
             x = 32 * i;
