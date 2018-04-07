@@ -89,9 +89,12 @@ body{
     color: #fff;
 }
 .login:hover {
-    border: solid 2px #fff;
+    border: solid 2px rgb(129, 55, 78);
     margin-top: 28px;
     transition: .2s;
+}
+.login:active {
+    background: rgb(129, 55, 78);
 }
 .form .input {
     width: 100%;
