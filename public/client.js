@@ -77,7 +77,6 @@ function draw() {
         texture[i] = new Image();
         texture[i].src = src;
     }
-    console.log(texture);
 
     if(window.maps){
         for (var i = 0; i < 16; i++) {
@@ -92,6 +91,14 @@ function draw() {
         objM.drawImage(texture[15], 512 + window.player.x, 368 + window.player.y);
     // socket.emit('move', { token:  localStorage.getItem("token"), control: control });
     }
+
+    if (control['s']) window.player.y = window.player.y + window.player.speed;
+    if (control['w']) window.player.y = window.player.y - window.player.speed;
+    if (control['a']) window.player.x = window.player.x - window.player.speed;
+    if (control['d']) window.player.x = window.player.x + window.player.speed;
+
+    // console.log(window.player)
+    // console.log(control)
 }
 
 setInterval(draw, 1000 / 30)
@@ -143,24 +150,6 @@ var endingAngle = 1.75 * Math.PI;
 //                 // objI.stroke();
 //                 drawRotatedImage(man, xP, yP, ratP);
 //             }
-
-
-    if (control['s']) window.player.y = window.player.y + window.player.speed;
-    if (control['w']) window.player.y = window.player.y - window.player.speed;
-    if (control['a']) window.player.x = window.player.x - window.player.speed;
-    if (control['d']) window.player.x = window.player.x + window.player.speed;
-
-    console.log(window.player)
-    console.log(control)
-}
-
-
-
-setInterval(draw, 1000 / 30)
-
-
-
-
 
 var TO_RADIANS = Math.PI / 180;
 

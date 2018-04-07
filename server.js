@@ -58,20 +58,16 @@ function serveStatic(response, cache, absPath) {
     // }
 }
 
-
-
-// var mapa = fs.readFileSync("map.json", "utf8");
-// map = JSON.parse(mapa);
 //генерация карты
 var mapa = mapGenerator.generateMap();
 map = mapa;
-// console.log(map);
+console.log(map);
 
 global.texture = [];
 global.players = [];
 
-var mapa = fs.readFileSync("map.json", "utf8");
-map = JSON.parse(mapa);
+// var mapa = fs.readFileSync("map.json", "utf8");
+// map = JSON.parse(mapa);
 // console.log(map[0])
 
 var player = {
