@@ -1,11 +1,10 @@
-var player = require('./player/player');
-
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.32.57");
+app.listen(80, "10.34.34.49");
 var async = require('async');
+var md5 = require('md5');
 
 
 var path = require('path');
@@ -68,7 +67,34 @@ global.texture = [];
 global.players = [];
 
 var mapa = fs.readFileSync("map.json", "utf8");
-// map = JSON.parse(mapa);
+map = JSON.parse(mapa);
+console.log(map[0])
+
+var player = {
+    name: "",
+    socket: "",
+    token: "",
+    oxygenLevel: 100,
+    temperature: 36.6,
+    energyLevel: 100,
+    x: 0,
+    y: 0,
+    rotation: 0,
+    inventory: []
+}
+
+// n - name
+// s - socket
+// t - token
+function newPlayer(n, s, t) {
+    p = player;
+    p.name = n;
+    p.socket = s;
+    p.token = t;
+    return p
+}
+
+
 
 io.on('connection', function(socket) {
     // texture = global.texture
@@ -77,19 +103,17 @@ io.on('connection', function(socket) {
 
     console.log("user connect " + socket.id);
 
-    // socket.on('hi', function(data) {
+    socket.on('hi', function(d) {
+        token = md5(d.username)
+        // console.log(newPlayer('neroslava', socket.id, token))
+        global.players.push(newPlayer('neroslava', socket.id, token));
+        console.log(global.players)
 
-    var obj = player.createPlayer("test");
-
-    console.log(player.newPlayer('neroslava'))
-    global.players.push(player.newPlayer('neroslava'));
-    console.log(global.players)
-
-    // socket.emit('hi', {
-    //     username: data.username, 
-    //     token: token
-    // });
-    // });
+        // socket.emit('hi', {
+        //     username: d.username, 
+        //     token: token
+        // });
+    });
 
 });
 

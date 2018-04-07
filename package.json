@@ -5,6 +5,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "js-base64": "^2.4.3",
+    "md5": "^2.2.1",
     "socket.io": "^2.1.0"
   }
 }
