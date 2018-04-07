@@ -1,6 +1,5 @@
 var socket = io();
 
-
 var mapC = document.getElementById("map");
 var map = mapC.getContext("2d");
 
@@ -28,7 +27,6 @@ conn.hello();
 
 socket.on('adduser', function(data) {
     name = data.player;
-
 });
 
 
@@ -149,28 +147,4 @@ $(document).keydown(function(eventObject) {
         default:
             break;
     }
-});
-
-$(document).keyup(function(eventObject) {
-    switch (eventObject.which) {
-        case 87:
-            control.w = false;
-            break;
-
-        case 65:
-            control.a = false;
-            break;
-
-        case 83:
-            control.s = false;
-            break;
-
-        case 68:
-            control.d = false;
-            break;
-
-        default:
-            break;
-    }
-
 });
