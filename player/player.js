@@ -1,4 +1,4 @@
-module.exports.newPlayer = function(name){
+var newPlayer = function(name){
 	this.name = name;
 
 	this.oxygenLevel = 100;
@@ -10,4 +10,10 @@ module.exports.newPlayer = function(name){
 
 	this.rotation = 0;
 	this.inventory = [];
+}
+
+module.exports.createPlayer = function(name){
+	var player = newPlayer(name);
+	console.log(player);
+	return player;
 }

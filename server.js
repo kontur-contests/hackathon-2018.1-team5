@@ -4,7 +4,7 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.34.49");
+app.listen(80, "10.34.32.57");
 var async = require('async');
 
 
@@ -78,7 +78,7 @@ io.on('connection', function(socket) {
     console.log("user connect " + socket.id);
 
     // socket.on('hi', function(data) {
-    var obj = player.newPlayer(data.username);
+    var obj = player.createPlayer("test");
     global.players.push(obj);
     // socket.emit('hi', {
     //     username: data.username, 
