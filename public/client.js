@@ -24,17 +24,15 @@ objC.height = 768;
 
 
 
-window.map = {};
-
 socket.on('texture', function(d) {
     localStorage.setItem("texture", JSON.stringify(d))
 });
 socket.on('map', function(d) {
-    window.map = d
+    window.maps = d;
+    console.log(window.maps);
 });
 
 
-console.log(window.map)
 
 var control = {
     "w": false,
@@ -58,12 +56,13 @@ function draw() {
     for (var i = 0; i < 16; i++) {
         for (var j = 0; j < 16; j++) {
             x = 32 * i;
-            y = 32 * j;
-            mapL.drawImage(texture[4], 0, 0, 32, 32, x, y, 32, 32);
+            y = 32 * j;     
+                        // mapL.drawImage(texture[11], 0, 0, 32, 32, x, y, 32, 32);
+            mapL.drawImage(texture[window.maps[0].map[i][j].texture], 0, 0, 32, 32, x, y, 32, 32);
             // mapL.drawImage(texture[window.map[i][j].texture], 0, 0, 64, 64, x, y, 64, 64);
         }
     }
-
+    objM.drawImage(texture[14], 512, 368);
 }
 
 setInterval(draw, 1000 / 30)
@@ -127,7 +126,7 @@ var endingAngle = 1.75 * Math.PI;
 // });
 
 
-
+// socket.emit('move', { player: name, control: control });
 
 
 
