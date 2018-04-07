@@ -72,9 +72,7 @@ var control = {
 }
 
 
-//  двигать карту
-// отрисовка персов 
-//  отрисовка угла перса 
+
 
 
 function draw() {
@@ -128,44 +126,6 @@ function draw() {
 setInterval(draw, 1000 / 30)
 
 
-
-// socket.on('up', function(data) {
-//     number = 0;
-//     // $('.info').text(JSON.stringify(data));
-//     map.clearRect(0, 0, mapC.width, mapC.height);
-//     objI.clearRect(0, 0, mapC.width, mapC.height);
-//     objM.clearRect(0, 0, mapC.width, mapC.height);
-
-
-//     for (var i = 0; i < data.map.mapa.length; i++) {
-//         // data.map.mapa[i]
-//         for (var j = 0; j < data.map.mapa[i].length; j++) {
-
-//             for (var k = 0; k < data.players.length; k++) {
-//                 if (data.players[k].name == socket.json.id) number = k;
-//             }
-
-//             tx = data.map.mapa[j][i][0];
-//             ty = data.map.mapa[j][i][1];
-//             x = 64 * i;
-//             y = 64 * j;
-//             // x = x + data.players[number].x;
-//             // y = y + data.players[number].y;
-//             // console.log(tx + "/" + ty)
-//             map.drawImage(texture, 64 * tx, 64 * ty, 64, 64, x, y, 64, 64);
-
-
-
-//             //player
-//             for (var p = 0; p < data.players.length; p++) {
-//                 xP = data.players[p].x;
-//                 yP = data.players[p].y;
-//                 ratP = data.players[p].rat;
-
-//                 // objI.arc(xP, yP, radius, startingAngle, endingAngle);
-//                 // objI.stroke();
-//                 drawRotatedImage(man, xP, yP, ratP);
-//             }
 
 var TO_RADIANS = Math.PI / 180;
 
