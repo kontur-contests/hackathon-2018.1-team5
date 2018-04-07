@@ -69,51 +69,50 @@ global.players = [];
 // map = JSON.parse(mapa);
 // console.log(map[0])
 
-var player = {
-    name: "",
-    socket: "",
-    token: "",
-    oxygenLevel: 100,
-    temperature: 36.6,
-    energyLevel: 100,
-    x: 0,
-    y: 0,
-    rotation: 0,
-    inventory: [],
-    oxygen: 100
-}
-
-// n - name
-// s - socket
-// t - token
-function newPlayer(n, s, t) {
-    p = player;
-    p.name = n;
-    p.socket = s;
-    p.token = t;
-
-    return p
-}
-
 io.on('connection', function(socket) {
-    console.log(global.players)
+    // console.log(global.players)
     // texture = global.texture
     socket.emit('texture', global.texture);
     socket.emit('map', map);
 
-    console.log("user connect " + socket.id);
+    // console.log("user connect " + socket.id);
 
     socket.on('hello', function(d) {
         //
-        token = md5(d.username+socket.id)
-
-        // global.players[global.players.length] = newPlayer('neroslava', socket.id, token);
-        console.log(newPlayer('neroslava', socket.id, token))
-        // console.log('<asdas></asdas>')
-        socket.emit('hi', {
-            username: d.username, 
+        token = md5(d.username + socket.id)
+        console.log('1')
+        console.log(global.players)
+        p = {
+            name: "",
+            socket: "",
+            token: "",
+            oxygenLevel: 100,
+            temperature: 36.6,
+            energyLevel: 100,
+            x: 0,
+            y: 0,
+            rotation: 0,
+            inventory: [],
+            oxygen: 100
+        }
+        p.socket = socket.id
+        p.token = token
+        global.players.push(p)
+        // console.log(newPlayer('neroslava', socket.id, token))
+        console.log(global.players)
+        socket.emit('hello', {
+            username: d.username,
             token: token
         });
+    });
+
+    socket.on('you', function(d) {
+        for (var i = 0; i < global.players.length; i++) {
+            if (global.players[i].socket == socket.id) {
+                global.players[i].socket.x = d.x
+                global.players[i].socket.y = d.y
+            }
+        }
     });
 
 
@@ -142,8 +141,14 @@ io.on('connection', function(socket) {
         for (var i = 0; i < global.players.length; i++) {
 
             if (global.players[i].oxygen != 0) global.players[i].oxygen = global.players[i].oxygen - 0.001;
+
+            // if (global.players[i].socket == socket.id) number = i
             // io.sockets.sockets[global.players[i].socket].emit('you', players[i])
+
+
         }
+        socket.emit('players', global.players);
+
     }, 1000 / 30)
 
 });
@@ -189,8 +194,8 @@ function getFiles(dirPath, callback) {
 
 
 getFiles('./texture', function(err, files, name) {
-    console.log("load texture ...")
-    console.log(err || files);
+    // console.log("load texture ...")
+    // console.log(err || files);
     for (var i = 0; i < files.length; i++) {
         global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }

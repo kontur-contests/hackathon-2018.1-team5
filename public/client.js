@@ -38,6 +38,9 @@ socket.on('map', function(d) {
     window.maps = d;
     console.log(window.maps);
 });
+socket.on('players', function(d) {
+    window.players = d;
+});
 socket.on('hello', function(d) {
     localStorage.setItem("token", d.token)
 });
@@ -87,7 +90,12 @@ function draw() {
         }
     }
     objM.drawImage(texture[15], 512, 368);
-
+    console.log(window.players)
+    for (var i = 0; i < window.players.length; i++) {
+        if (window.players[i].token != localStorage.getItem('token')) {
+            objM.drawImage(texture[15], window.players[i].x-window.player.x, window.players[i].y-window.player.y);
+        }
+    }
 
     if (control['s']) window.player.y = window.player.y + window.player.speed;
     if (control['w']) window.player.y = window.player.y - window.player.speed;
