@@ -1,13 +1,16 @@
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
-
-app.listen(3000, "10.34.34.49");
-
-
 var path = require('path');
 var mime = require('mime');
+
+
+app.listen(3000);
+
+
+
 var cache = {};
+
 function handler(req, res) {
     var filePath = false;
     if (req.url == '/') {
@@ -37,22 +40,23 @@ function serveStatic(response, cache, absPath) {
     // if (cache[absPath]) {
     //     sendFile(response, absPath, cache[absPath]);
     // } else {
-        fs.exists(absPath, function(exists) {
-            if (exists) {
-                fs.readFile(absPath, function(err, data) {
-                    if (err) {
-                        send404(response);
-                    } else {
-                        cache[absPath] = data;
-                        sendFile(response, absPath, data);
-                    }
-                });
-            } else {
-                send404(response);
-            }
-        });
+    fs.exists(absPath, function(exists) {
+        if (exists) {
+            fs.readFile(absPath, function(err, data) {
+                if (err) {
+                    send404(response);
+                } else {
+                    cache[absPath] = data;
+                    sendFile(response, absPath, data);
+                }
+            });
+        } else {
+            send404(response);
+        }
+    });
     // }
 }
+
 
 
 var mapa = fs.readFileSync("map.json", "utf8");
