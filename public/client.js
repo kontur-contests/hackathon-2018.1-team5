@@ -33,7 +33,7 @@ window.player = {
     x: 0,
     y: 0,
     rotation: 0,
-
+    username: "",
     oxygen: 0,
     energyLevel: 0,
     temperature: 0,
@@ -43,7 +43,7 @@ window.player = {
     blockX:0,
     blockY:0,
 
-    speed: 20
+    speed: 8
 }
 
 
@@ -56,8 +56,12 @@ socket.on('map', function(d) {
 socket.on('players', function(d) {
     window.players = d;
 });
+socket.on('res', function(d) {
+    window.res = d;
+});
 socket.on('hello', function(d) {
     localStorage.setItem("token", d.token)
+    window.p
 });
 
 socket.on('you', function(d) {
@@ -119,19 +123,28 @@ function draw() {
                 x = x + window.maps[l].x * 1024;
                 y = (64 * j) + 368;
                 y = y + window.maps[l].y * 1024;
-                if (window.maps[l].obj[i][j].texture > 0) objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+                if (window.maps[l].obj[i][j].texture > 0) {
+                    if (window.maps[l].obj[i][j].texture == 7) {
+                    objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x +16, y + window.player.y+16, 32, 32);
+
+                    }
+                    else{
+                    objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+
+                    }
+                }
             }
         }
     }
-    drawRotatedImage(texture[7], 512, 368, window.player.rotation);
- console.log(window.players)
+    drawRotatedImage(texture[9], 512, 368, window.player.rotation);
+ // console.log(window.players)
     for (var i = 0; i < window.players.length; i++) {
        
         if (window.players[i].token != localStorage.getItem('token')) {
             objM.font = "14px Tahoma";
             objM.strokeStyle = "black";
-            objM.strokeText(window.players[i].token, window.players[i].x + 400 - window.player.x, -window.players[i].y + 335 + window.player.y);
-            drawRotatedImage(texture[7], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
+            objM.strokeText(window.players[i].username, window.players[i].x + 480 - window.player.x, -window.players[i].y + 335 + window.player.y);
+            drawRotatedImage(texture[9], window.players[i].x + 512 - window.player.x, -window.players[i].y + 368 + window.player.y, window.players[i].rotation);
             // objM.drawImage(texture[11], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
         }
     }
@@ -148,26 +161,26 @@ function draw() {
     // interfaceI.drawImage(texture[4], 0, 0, 16, 16, 0, 0, 16, 16);
 
     // energy
-    interfaceI.drawImage(texture[9], 20, 30);
+    interfaceI.drawImage(texture[10], 20, 30);
     interfaceI.strokeText(window.player.energyLevel + "/100",50, 45);
     // o2
-    interfaceI.drawImage(texture[10], 20, 60);
+    interfaceI.drawImage(texture[11], 20, 60);
     interfaceI.strokeText(window.player.oxygen.toFixed(2) + "/100", 50, 75);
     // temperature
-    interfaceI.drawImage(texture[11], 20, 90);
+    interfaceI.drawImage(texture[12], 20, 90);
     interfaceI.strokeText(window.player.temperature, 50, 105);
     // resource
-    interfaceI.drawImage(texture[12], 20, 115);
-    interfaceI.strokeText("0", 50, 135);
+    interfaceI.drawImage(texture[13], 20, 115);
+    interfaceI.strokeText(window.res.h20, 50, 135);
     // resource
-    interfaceI.drawImage(texture[13], 17, 142);
-    interfaceI.strokeText("0", 50, 165);
+    interfaceI.drawImage(texture[14], 17, 142);
+    interfaceI.strokeText(window.res.copper, 50, 165);
     // resource
-    interfaceI.drawImage(texture[14], 20, 175);
-    interfaceI.strokeText("0", 50, 195);
+    interfaceI.drawImage(texture[15], 20, 175);
+    interfaceI.strokeText(window.res.tin, 50, 195);
 
-    interfaceI.drawImage(texture[9], 20, 215);
-    interfaceI.strokeText("0", 50, 230);
+    interfaceI.drawImage(texture[10], 20, 215);
+    interfaceI.strokeText(window.res.power, 50, 230);
 
 
     interfaceI.strokeText("chunkX:"+window.player.chunkX, 250, 30);
@@ -223,12 +236,65 @@ $(document).keydown(function(eventObject) {
             if(window.players[i].token == localStorage.getItem('token')){
                 for (var u = 0; u < window.maps.length; u++) {
                     if(window.maps[u].x == window.players[i].chunkX && window.maps[u].y == window.players[i].chunkY){
+                        window.maps[u].map[window.players[i].blockX][window.players[i].blockY].texture = 8;
                         window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture = 7;
+                        // socket.emit('upMap', [u,window.players[i].blockX,window.players[i].block]);
+                        socket.emit('power', {});
                     }
                 }
             }
         }
-        socket.emit('you', window.maps);
+    }
+    if (eventObject.which == 50){
+        for (var i = 0; i < window.players.length; i++) {
+            if(window.players[i].token == localStorage.getItem('token')){
+                for (var u = 0; u < window.maps.length; u++) {
+                    if(window.maps[u].x == window.players[i].chunkX && window.maps[u].y == window.players[i].chunkY){
+                        // window.maps[u].map[window.players[i].blockX][window.players[i].blockY].texture = 8;
+                        
+                        // socket.emit('upMap', [u,window.players[i].blockX,window.players[i].block]);
+                        console.log(window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture)
+                        if (window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture == 4) {
+                            socket.emit('h20', {});
+                        }
+                        if (window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture == 5) {
+                            socket.emit('tim', {});
+                        }
+                        if (window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture == 6) {
+                            socket.emit('copper', {});
+                        }
+                        window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture = 24;
+                    }
+                }
+            }
+        }
+    }
+    if (eventObject.which == 51){
+        for (var i = 0; i < window.players.length; i++) {
+            if(window.players[i].token == localStorage.getItem('token')){
+                for (var u = 0; u < window.maps.length; u++) {
+                    if(window.maps[u].x == window.players[i].chunkX && window.maps[u].y == window.players[i].chunkY){
+                        // window.maps[u].map[window.players[i].blockX][window.players[i].blockY].texture = 8;
+
+                        window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture = 23;
+                        // socket.emit('upMap', [u,window.players[i].blockX,window.players[i].block]);
+                    }
+                }
+            }
+        }
+    }
+    if (eventObject.which == 52){
+        for (var i = 0; i < window.players.length; i++) {
+            if(window.players[i].token == localStorage.getItem('token')){
+                for (var u = 0; u < window.maps.length; u++) {
+                    if(window.maps[u].x == window.players[i].chunkX && window.maps[u].y == window.players[i].chunkY){
+                        // window.maps[u].map[window.players[i].blockX][window.players[i].blockY].texture = 8;
+                        window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture = 22;
+                        // socket.emit('upMap', [u,window.players[i].blockX,window.players[i].block]);
+                    }
+                }
+            }
+        }
     }
 });
 

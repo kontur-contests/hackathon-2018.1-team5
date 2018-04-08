@@ -65,11 +65,15 @@ var map = mapGenerator.generateMap();
 
 global.texture = [];
 global.players = [];
+global.power = 0;
+global.h20 = 0;
+global.tin = 0;
+global.copper = 0;
 global.res = {
     power: 0,
-    h20: 0,
-    tin: 0,
-    copper: 0,
+    h20: 100,
+    tin: 100,
+    copper: 100,
 };
 
 // var mapa = fs.readFileSync("map.json", "utf8");
@@ -82,14 +86,15 @@ io.on('connection', function(socket) {
     socket.emit('texture', global.texture);
     socket.emit('map', map);
 
-    // console.log("user connect " + socket.id);
+    console.log(socket.handshake.address);
 
     socket.on('hello', function(d) {
         //
-
+        if(socket.handshake.address == '10.34.32.59') username = 'pingvi96'
+        if(socket.handshake.address == '10.34.34.49') username = 'neroslava'
         token = md5(d.username + socket.id)
         p = {
-            name: 'name',
+            username: 'name',
 
             oxygenLevel: 100,
             temperature: 36.6,
@@ -111,13 +116,13 @@ io.on('connection', function(socket) {
             rotation: 0,
             inventory: []
         }
-        p.name = d.username
+        p.username = username
         p.token = token
         p.socket = socket.id
         global.players.push(p);
         // console.log(newPlayer);
         socket.emit('hello', {
-            username: d.username,
+            username: username,
             token: token
         });
     });
@@ -132,6 +137,7 @@ io.on('connection', function(socket) {
                 global.players[i].blockY = landCoord.blockY;
 
                 global.players[i].oxygen = d.oxygen;
+                // global.players[i].username = d.username;
                 global.players[i].energyLevel = d.energyLevel;
                 global.players[i].temperature = d.temperature;
 
@@ -145,21 +151,46 @@ io.on('connection', function(socket) {
     socket.on('map', function(d) {
         socket.emit('map', d);
     });
+    socket.on('power', function(d) {
+        global.power = global.power+5
+    });
+    socket.on('h20', function(d) {
+        global.h20 = global.h20+5
+    });
+    socket.on('tim', function(d) {
+        global.tim = global.tim+5
+    });
+    socket.on('copper', function(d) {
+        global.copper = global.copper+5
+    });
 
 
 
     setInterval(function() {
+
+        global.res.power = global.res.power
+
         for (var i = 0; i < global.players.length; i++) {
 
-            if (global.players[i].oxygen != 0) global.players[i].oxygen = global.players[i].oxygen - 0.001;
+            if (global.players[i].oxygen != 0) global.players[i].oxygen = global.players[i].oxygen - 0.01;
 
             if (global.players[i].socket == socket.id) {
                 io.sockets.sockets[global.players[i].socket].emit('you', global.players[i])
             }
         }
         socket.emit('players', global.players);
+        socket.emit('res', global.res);
 
     }, 1000 / 30)
+
+    setInterval(function() {
+
+        global.res.power = global.res.power + global.power;
+        global.res.h20 = global.res.h20 + global.h20;
+        global.res.tim = global.res.tim + global.tim;
+        global.res.copper = global.res.copper + global.copper;
+
+    }, 2000 )
 
 });
 
