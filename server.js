@@ -2,7 +2,7 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.32.57");
+app.listen(80, "10.34.34.49");
 var async = require('async');
 var md5 = require('md5');
 var mapGenerator = require('./map/mapGenerator');
@@ -88,8 +88,33 @@ io.on('connection', function(socket) {
         //
 
         token = md5(d.username + socket.id)
-        var newPlayer = player.newPlayer(d.name, socket.id, token);
-        global.players.push(newPlayer);
+        p = {
+            name: 'name',
+
+            oxygenLevel: 100,
+            temperature: 36.6,
+            energyLevel: 100,
+            oxygen: 100,
+
+            x: 0,
+            y: 0,
+
+            chunkX: -1,
+            chunkY: 0,
+
+            blockX: 15,
+            blockY: 15,
+
+            socket: "",
+            token: "",
+
+            rotation: 0,
+            inventory: []
+        }
+        p.name = d.username
+        p.token = token
+        p.socket = socket.id
+        global.players.push(p);
         // console.log(newPlayer);
         socket.emit('hello', {
             username: d.username,
