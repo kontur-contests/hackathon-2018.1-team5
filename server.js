@@ -105,6 +105,11 @@ io.on('connection', function(socket) {
                 global.players[i].chunkY = landCoord.chunkY;
                 global.players[i].blockX = landCoord.blockX;
                 global.players[i].blockY = landCoord.blockY;
+
+                global.players[i].oxygen = d.oxygen;
+                global.players[i].energyLevel = d.energyLevel;
+                global.players[i].temperature = d.temperature;
+
                 global.players[i].x = d.x
                 global.players[i].y = d.y
                 global.players[i].rotation = d.rotation
@@ -119,10 +124,9 @@ io.on('connection', function(socket) {
 
             if (global.players[i].oxygen != 0) global.players[i].oxygen = global.players[i].oxygen - 0.001;
 
-            // if (global.players[i].socket == socket.id) number = i
-            // io.sockets.sockets[global.players[i].socket].emit('you', players[i])
-
-
+            if (global.players[i].socket == socket.id) {
+                io.sockets.sockets[global.players[i].socket].emit('you', global.players[i])
+            }
         }
         socket.emit('players', global.players);
 
@@ -172,7 +176,7 @@ function getFiles(dirPath, callback) {
 
 getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
-    console.log(err || files);
+    // console.log(err || files);
     for (var i = 0; i < files.length; i++) {
         global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }

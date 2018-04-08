@@ -22,7 +22,7 @@ var objI = objC.getContext("2d");
 objC.width = 1024;
 objC.height = 768;
 
-var interfaceC = document.getElementById("obj");
+var interfaceC = document.getElementById("interface");
 var interfaceI = interface.getContext("2d");
 
 
@@ -33,7 +33,11 @@ window.player = {
     x: 0,
     y: 0,
     rotation: 0,
+
     oxygen: 0,
+    energyLevel: 0,
+    temperature: 0,
+
     speed: 20
 }
 
@@ -53,6 +57,8 @@ socket.on('hello', function(d) {
 });
 
 socket.on('you', function(d) {
+    window.player.energyLevel = d.energyLevel;
+    window.player.temperature = d.temperature;
     window.player.oxygen = d.oxygen;
 });
 
@@ -122,18 +128,23 @@ function draw() {
     }
 
 
-    inteface.font = " bold 40px Tahoma";
-    inteface.strokeStyle = "red";
-    inteface.strokeText(window.player.x, 20, 80);
-    inteface.strokeText(window.player.y, 20, 160);
+    // interfaceI.font = " bold 40px Tahoma";
+    // interfaceI.strokeStyle = "red";
+    // interfaceI.strokeText(window.player.x, 20, 80);
+    // interfaceI.strokeText(window.player.y, 20, 160);
 
     // mapL.drawImage(texture[4], 40, 40);
-    inteface.drawImage(texture[4], 0, 0, 16, 16, 0, 0, 16, 16);
-    inteface.drawImage(texture[5], 40, 120);
-    inteface.drawImage(texture[6], 40, 200);
-    inteface.drawImage(texture[7], 40, 280);
+    // interfaceI.drawImage(texture[4], 0, 0, 16, 16, 0, 0, 16, 16);
 
-
+    // energy
+    interfaceI.drawImage(texture[9], 20, 30);
+    interfaceI.strokeText(window.player.energyLevel, 40, 30);
+    // o2
+    interfaceI.drawImage(texture[10], 20, 60);
+    interfaceI.strokeText(window.player.oxygen, 40, 60);
+    // temperature
+    interfaceI.drawImage(texture[11], 20, 90);
+    interfaceI.strokeText(window.player.temperature, 40, 90);
 
     socket.emit('you', window.player);
 
@@ -145,7 +156,7 @@ function draw() {
     if (control['a']) window.player.x = window.player.x - window.player.speed;
     if (control['d']) window.player.x = window.player.x + window.player.speed;
     window.player.rotation = rotation;
-    // console.log(window.player)
+    console.log(window.player)
     // console.log(control)
 }
 

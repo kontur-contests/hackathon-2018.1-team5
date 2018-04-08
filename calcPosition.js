@@ -75,10 +75,10 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 		blockY: blockY
 	};
 
-	console.log("chunkX: ",numberChunkX);
-	console.log("chunkY: ",numberChunkY);
-	console.log("blockX: ",blockX);
-	console.log("blockY: ",blockY);
+	// console.log("chunkX: ",numberChunkX);
+	// console.log("chunkY: ",numberChunkY);
+	// console.log("blockX: ",blockX);
+	// console.log("blockY: ",blockY);
 
 	return result;
 }
