@@ -1,4 +1,4 @@
-var socket = io('10.34.32.57');
+var socket = io('10.34.34.49');
 
 var mapC = document.getElementById("map");
 var mapL = mapC.getContext("2d");
@@ -47,7 +47,6 @@ socket.on('texture', function(d) {
 });
 socket.on('map', function(d) {
     window.maps = d;
-    // console.log(window.maps);
 });
 socket.on('players', function(d) {
     window.players = d;
@@ -128,6 +127,8 @@ function draw() {
     }
 
 
+
+
     // interfaceI.font = " bold 40px Tahoma";
     // interfaceI.strokeStyle = "red";
     // interfaceI.strokeText(window.player.x, 20, 80);
@@ -156,9 +157,11 @@ function draw() {
     if (control['a']) window.player.x = window.player.x - window.player.speed;
     if (control['d']) window.player.x = window.player.x + window.player.speed;
     window.player.rotation = rotation;
-    console.log(window.player)
+    // console.log(window.player)
     // console.log(control)
 }
+
+
 
 setInterval(draw, 1000 / 30)
 
@@ -182,6 +185,21 @@ $(document).mousemove(function(e) {
     y = e.pageY - CH / 2
     control.mouseX = x;
     control.mouseY = y;
+});
+
+$(document).keydown(function(eventObject) {
+    if (eventObject.which == 49){
+        for (var i = 0; i < window.players.length; i++) {
+            if(window.players[i].token == localStorage.getItem('token')){
+                for (var u = 0; u < window.maps.length; u++) {
+                    if(window.maps[u].x == window.players[i].chunkX && window.maps[u].y == window.players[i].chunkY){
+                        window.maps[u].obj[window.players[i].blockX][window.players[i].blockY].texture = 7;
+                    }
+                }
+            }
+        }
+        socket.emit('you', window.maps);
+    }
 });
 
 $(document).keydown(function(eventObject) {
