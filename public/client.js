@@ -1,4 +1,4 @@
-var socket = io('10.34.34.49');
+var socket = io('10.34.32.57');
 
 var mapC = document.getElementById("map");
 var mapL = mapC.getContext("2d");
@@ -22,12 +22,12 @@ var objI = objC.getContext("2d");
 objC.width = 1024;
 objC.height = 768;
 
-var inteface = document.getElementById("obj");
-var inteface = inteface.getContext("2d");
+var interfaceC = document.getElementById("obj");
+var interfaceI = interface.getContext("2d");
 
 
-inteface.width = 1024;
-inteface.height = 768;
+interfaceC.width = 1024;
+interfaceC.height = 768;
 
 window.player = {
     x: 0,
@@ -60,8 +60,6 @@ socket.on('you', function(d) {
 socket.emit('hello', { username: 'test' });
 // });
 
-
-
 var control = {
     "w": false,
     "a": false,
@@ -71,15 +69,11 @@ var control = {
     "mouseY": 0,
 }
 
-
-
-
-
 function draw() {
     mapL.clearRect(0, 0, mapC.width, mapC.height);
     objI.clearRect(0, 0, mapC.width, mapC.height);
     objM.clearRect(0, 0, mapC.width, mapC.height);
-    inteface.clearRect(0, 0, mapC.width, mapC.height);
+    interfaceI.clearRect(0, 0, mapC.width, mapC.height);
     texture = JSON.parse(localStorage.getItem('texture'));
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];

@@ -2,11 +2,12 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 var Base64 = require('js-base64').Base64;
-app.listen(80, "10.34.34.49");
+app.listen(80, "10.34.32.57");
 var async = require('async');
 var md5 = require('md5');
 var mapGenerator = require('./map/mapGenerator');
-var player = require('./player/player')
+var player = require('./player/player');
+var calculator = require('./calcPosition');
 
 
 var path = require('path');
@@ -23,7 +24,6 @@ function handler(req, res) {
     var absPath = __dirname + filePath;
     serveStatic(res, cache, absPath);
 }
-
 
 function send404(response) {
     response.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -100,6 +100,11 @@ io.on('connection', function(socket) {
     socket.on('you', function(d) {
         for (var i = 0; i < global.players.length; i++) {
             if (global.players[i].socket == socket.id) {
+                var landCoord = calculator.getCurrentBlockAndChank(d.x, d.y);
+                global.players[i].chunkX = landCoord.chunkX;
+                global.players[i].chunkY = landCoord.chunkY;
+                global.players[i].blockX = landCoord.blockX;
+                global.players[i].blockY = landCoord.blockY;
                 global.players[i].x = d.x
                 global.players[i].y = d.y
                 global.players[i].rotation = d.rotation
