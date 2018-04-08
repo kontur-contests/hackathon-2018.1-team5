@@ -1,4 +1,4 @@
-var socket = io('10.34.32.57');
+var socket = io('10.34.34.49');
 
 var mapC = document.getElementById("map");
 var mapL = mapC.getContext("2d");
@@ -124,9 +124,9 @@ function draw() {
         }
     }
     drawRotatedImage(texture[7], 512, 368, window.player.rotation);
-
+ console.log(window.players)
     for (var i = 0; i < window.players.length; i++) {
-        // console.log(window.players[i].x)
+       
         if (window.players[i].token != localStorage.getItem('token')) {
             objM.font = "14px Tahoma";
             objM.strokeStyle = "black";
@@ -165,6 +165,9 @@ function draw() {
     // resource
     interfaceI.drawImage(texture[14], 20, 175);
     interfaceI.strokeText("0", 50, 195);
+
+    interfaceI.drawImage(texture[9], 20, 215);
+    interfaceI.strokeText("0", 50, 230);
 
 
     interfaceI.strokeText("chunkX:"+window.player.chunkX, 250, 30);
