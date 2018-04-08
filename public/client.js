@@ -139,19 +139,22 @@ function draw() {
 
     // energy
     interfaceI.drawImage(texture[9], 20, 30);
-    interfaceI.strokeText(window.player.energyLevel,50, 45);
+    interfaceI.strokeText(window.player.energyLevel + "/100",50, 45);
     // o2
     interfaceI.drawImage(texture[10], 20, 60);
-    interfaceI.strokeText(window.player.oxygen, 50, 75);
+    interfaceI.strokeText(window.player.oxygen.toFixed(2) + "/100", 50, 75);
     // temperature
     interfaceI.drawImage(texture[11], 20, 90);
     interfaceI.strokeText(window.player.temperature, 50, 105);
     // temperature
-    interfaceI.drawImage(texture[4], 20, 90);
-    interfaceI.strokeText(window.player.temperature, 50, 105);
+    interfaceI.drawImage(texture[12], 20, 115);
+    interfaceI.strokeText("0", 50, 135);
     // temperature
-    interfaceI.drawImage(texture[5], 20, 90);
-    interfaceI.strokeText(window.player.temperature, 50, 105);
+    interfaceI.drawImage(texture[13], 17, 142);
+    interfaceI.strokeText("0", 50, 165);
+    // temperature
+    interfaceI.drawImage(texture[14], 20, 175);
+    interfaceI.strokeText("0", 50, 195);
 
     socket.emit('you', window.player);
 
