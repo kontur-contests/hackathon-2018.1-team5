@@ -1,4 +1,4 @@
-var socket = io('10.34.34.49');
+var socket = io('10.34.32.57');
 
 var mapC = document.getElementById("map");
 var mapL = mapC.getContext("2d");
@@ -38,6 +38,11 @@ window.player = {
     energyLevel: 0,
     temperature: 0,
 
+    chunkX:0,
+    chunkY:0,
+    blockX:0,
+    blockY:0,
+
     speed: 20
 }
 
@@ -59,6 +64,11 @@ socket.on('you', function(d) {
     window.player.energyLevel = d.energyLevel;
     window.player.temperature = d.temperature;
     window.player.oxygen = d.oxygen;
+
+    window.player.chunkY = d.chunkY;
+    window.player.chunkX = d.chunkX;
+    window.player.blockY = d.blockY;
+    window.player.blockX = d.blockX;
 });
 
 // $(document).ready(function() {
@@ -146,16 +156,24 @@ function draw() {
     // temperature
     interfaceI.drawImage(texture[11], 20, 90);
     interfaceI.strokeText(window.player.temperature, 50, 105);
-    // temperature
+    // resource
     interfaceI.drawImage(texture[12], 20, 115);
     interfaceI.strokeText("0", 50, 135);
-    // temperature
+    // resource
     interfaceI.drawImage(texture[13], 17, 142);
     interfaceI.strokeText("0", 50, 165);
-    // temperature
+    // resource
     interfaceI.drawImage(texture[14], 20, 175);
     interfaceI.strokeText("0", 50, 195);
 
+
+    interfaceI.strokeText("chunkX:"+window.player.chunkX, 250, 30);
+    interfaceI.strokeText("chunkY:"+window.player.chunkY, 250, 45);
+    interfaceI.strokeText("blockX:"+window.player.blockX, 250, 75);
+    interfaceI.strokeText("blockY:"+window.player.blockY, 250, 105);
+    interfaceI.strokeText("x:"+window.player.x, 250, 130);
+    interfaceI.strokeText("y:"+window.player.y, 250, 155);
+    
     socket.emit('you', window.player);
 
     rotation = Math.atan2(control.mouseX, control.mouseY);
