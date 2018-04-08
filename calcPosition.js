@@ -86,4 +86,4 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 	return result;
 }
 
-module.exports.getCurrentBlockAndChank(0,0);
+// module.exports.getCurrentBlockAndChank(0,0);
