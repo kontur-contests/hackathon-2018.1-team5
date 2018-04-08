@@ -129,7 +129,7 @@ function draw() {
 
 
 
-    // interfaceI.font = " bold 40px Tahoma";
+    interfaceI.font = " bold 16px Tahoma";
     // interfaceI.strokeStyle = "red";
     // interfaceI.strokeText(window.player.x, 20, 80);
     // interfaceI.strokeText(window.player.y, 20, 160);
@@ -139,13 +139,19 @@ function draw() {
 
     // energy
     interfaceI.drawImage(texture[9], 20, 30);
-    interfaceI.strokeText(window.player.energyLevel, 40, 30);
+    interfaceI.strokeText(window.player.energyLevel,50, 45);
     // o2
     interfaceI.drawImage(texture[10], 20, 60);
-    interfaceI.strokeText(window.player.oxygen, 40, 60);
+    interfaceI.strokeText(window.player.oxygen, 50, 75);
     // temperature
     interfaceI.drawImage(texture[11], 20, 90);
-    interfaceI.strokeText(window.player.temperature, 40, 90);
+    interfaceI.strokeText(window.player.temperature, 50, 105);
+    // temperature
+    interfaceI.drawImage(texture[4], 20, 90);
+    interfaceI.strokeText(window.player.temperature, 50, 105);
+    // temperature
+    interfaceI.drawImage(texture[5], 20, 90);
+    interfaceI.strokeText(window.player.temperature, 50, 105);
 
     socket.emit('you', window.player);
 

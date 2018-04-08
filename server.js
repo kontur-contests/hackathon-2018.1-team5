@@ -117,6 +117,10 @@ io.on('connection', function(socket) {
         }
     });
 
+    socket.on('map', function(d) {
+        socket.emit('map', d);
+    });
+
 
 
     setInterval(function() {
