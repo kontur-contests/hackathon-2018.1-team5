@@ -2,6 +2,9 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 	var playerBlockNumberX = Math.floor(x/64);
 	var playerBlockNumberY = Math.floor(y/64);
 
+	playerBlockNumberX = Math.abs(x) < 64? 1: playerBlockNumberX;
+	playerBlockNumberY = Math.abs(y) < 64? 1: playerBlockNumberY;
+
 	var blockX = Math.floor(Math.abs(playerBlockNumberX) % 16);
 	var blockY = Math.floor(Math.abs(playerBlockNumberY) % 16);
 
@@ -82,3 +85,5 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 
 	return result;
 }
+
+module.exports.getCurrentBlockAndChank(0,0);
