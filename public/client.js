@@ -34,7 +34,7 @@ window.player = {
     y: 0,
     rotation: 0,
     oxygen: 0,
-    speed: 4
+    speed: 20
 }
 
 
@@ -79,6 +79,7 @@ function draw() {
     mapL.clearRect(0, 0, mapC.width, mapC.height);
     objI.clearRect(0, 0, mapC.width, mapC.height);
     objM.clearRect(0, 0, mapC.width, mapC.height);
+    inteface.clearRect(0, 0, mapC.width, mapC.height);
     texture = JSON.parse(localStorage.getItem('texture'));
     for (var i = 0; i < texture.length; i++) {
         src = texture[i];
@@ -94,6 +95,11 @@ function draw() {
                 y = (64 * j) + 368;
                 y = y + window.maps[l].y * 1024;
                 mapL.drawImage(texture[window.maps[l].map[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+                objM.font = "11px Tahoma";
+                objM.strokeStyle = "black";
+                // objM.strokeText(window.maps[l].x + "/" + window.maps[l].y, x - window.player.x, y + window.player.y);
+                // objM.strokeText(window.maps[l].x + "/" + window.maps[l].y + "/" + i + "/" + j, x - window.player.x, y + window.player.y);
+
             }
         }
     }
@@ -104,7 +110,7 @@ function draw() {
                 x = x + window.maps[l].x * 1024;
                 y = (64 * j) + 368;
                 y = y + window.maps[l].y * 1024;
-                if(window.maps[l].obj[i][j].texture > 0) objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
+                if (window.maps[l].obj[i][j].texture > 0) objI.drawImage(texture[window.maps[l].obj[i][j].texture], 0, 0, 64, 64, x - window.player.x, y + window.player.y, 64, 64);
             }
         }
     }
@@ -120,6 +126,21 @@ function draw() {
             // objM.drawImage(texture[11], window.players[i].x+512- window.player.x, -window.players[i].y+368+ window.player.y);
         }
     }
+
+
+    inteface.font = " bold 40px Tahoma";
+    inteface.strokeStyle = "red";
+    inteface.strokeText(window.player.x, 20, 80);
+    inteface.strokeText(window.player.y, 20, 160);
+
+    // mapL.drawImage(texture[4], 40, 40);
+    inteface.drawImage(texture[4], 0, 0, 16, 16, 0, 0, 16, 16);
+    inteface.drawImage(texture[5], 40, 120);
+    inteface.drawImage(texture[6], 40, 200);
+    inteface.drawImage(texture[7], 40, 280);
+
+
+
     socket.emit('you', window.player);
 
     rotation = Math.atan2(control.mouseX, control.mouseY);

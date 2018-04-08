@@ -65,6 +65,12 @@ var map = mapGenerator.generateMap();
 
 global.texture = [];
 global.players = [];
+global.res = {
+    power: 0,
+    h20: 0,
+    tin: 0,
+    copper: 0,
+};
 
 // var mapa = fs.readFileSync("map.json", "utf8");
 // map = JSON.parse(mapa);
@@ -161,7 +167,7 @@ function getFiles(dirPath, callback) {
 
 getFiles('./texture', function(err, files, name) {
     console.log("load texture ...")
-    // console.log(err || files);
+    console.log(err || files);
     for (var i = 0; i < files.length; i++) {
         global.texture[i] = "data:image/png;base64," + fs.readFileSync(files[i], 'base64');
     }
