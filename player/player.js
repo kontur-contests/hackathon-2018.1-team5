@@ -9,6 +9,12 @@ module.exports.newPlayer = function(name, id, token){
 	this.x = 0;
 	this.y = 0;
 
+	this.chunkX = -1;
+	this.chunkY = 0;
+
+	this.blockX = 15;
+	this.blockY = 15;
+
 	this.socket = id;
 	this.token = token;
 

@@ -6,7 +6,8 @@ app.listen(80, "10.34.32.57");
 var async = require('async');
 var md5 = require('md5');
 var mapGenerator = require('./map/mapGenerator');
-var player = require('./player/player')
+var player = require('./player/player');
+var calculator = require('./calcPosition');
 
 
 var path = require('path');
@@ -93,6 +94,11 @@ io.on('connection', function(socket) {
     socket.on('you', function(d) {
         for (var i = 0; i < global.players.length; i++) {
             if (global.players[i].socket == socket.id) {
+                var landCoord = calculator.getCurrentBlockAndChank(d.x, d.y);
+                global.players[i].chunkX = landCoord.chunkX;
+                global.players[i].chunkY = landCoord.chunkY;
+                global.players[i].blockX = landCoord.blockX;
+                global.players[i].blockY = landCoord.blockY;
                 global.players[i].x = d.x
                 global.players[i].y = d.y
                 global.players[i].rotation = d.rotation

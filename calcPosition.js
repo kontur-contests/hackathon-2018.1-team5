@@ -8,12 +8,14 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 	var numberChunkX;
 	var numberChunkY;
 
-	if(x<0){
+	if(x<=0){
 		playerBlockNumberX--;
+		blockX = 15 - blockX;
 	}
 
-	if(y<0){
+	if(y<=0){
 		playerBlockNumberY--;
+		blockY = 15 - blockY;
 	}
 // calc X
 	if(playerBlockNumberX<=16 && playerBlockNumberX>0){
@@ -73,10 +75,10 @@ module.exports.getCurrentBlockAndChank = function(x,y){
 		blockY: blockY
 	};
 
-	// console.log("chunkX: ",numberChunkX);
-	// console.log("chunkY: ",numberChunkY);
-	// console.log("blockX: ",blockX);
-	// console.log("blockY: ",blockY);
+	console.log("chunkX: ",numberChunkX);
+	console.log("chunkY: ",numberChunkY);
+	console.log("blockX: ",blockX);
+	console.log("blockY: ",blockY);
 
 	return result;
 }
